@@ -1,0 +1,17 @@
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\bin\Debug\GroupProject3280.exe.config
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\bin\Debug\GroupProject3280.exe
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\bin\Debug\GroupProject3280.pdb
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.csprojAssemblyReference.cache
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\MainWindow.g.cs
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\Search\wndSearch.g.cs
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\App.g.cs
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280_MarkupCompile.cache
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280_MarkupCompile.lref
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\MainWindow.baml
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\Search\wndSearch.baml
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.g.resources
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.Properties.Resources.resources
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.csproj.GenerateResource.cache
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.csproj.CoreCompileInputs.cache
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.exe
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.pdb

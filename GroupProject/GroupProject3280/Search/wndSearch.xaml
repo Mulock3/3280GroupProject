@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GroupProject3280.Search"
         mc:Ignorable="d"
-        Title="wndSearch" Height="450" Width="800">
+        Title="Search" Height="450" Width="800" ResizeMode="NoResize">
     <Grid>
-        
+        <Label Content="Invoice Table" HorizontalAlignment="Left" Height="30" Margin="349,10,0,0" VerticalAlignment="Top" Width="83" FontWeight="Bold"/>
+        <DataGrid HorizontalAlignment="Left" Height="320" Margin="10,89,0,0" VerticalAlignment="Top" Width="772"/>
+        <ComboBox HorizontalAlignment="Left" Margin="330,62,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox HorizontalAlignment="Left" Margin="455,62,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox HorizontalAlignment="Left" Margin="205,62,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.489,1.515"/>
+        <Label Content="Date" HorizontalAlignment="Left" Height="26" Margin="246,36,0,0" VerticalAlignment="Top" Width="36"/>
+        <Label Content="Invoice #" HorizontalAlignment="Left" Height="26" Margin="360,36,0,0" VerticalAlignment="Top" Width="60"/>
+        <Label Content="Charge Amount" HorizontalAlignment="Left" Height="26" Margin="466,36,0,0" VerticalAlignment="Top" Width="100"/>
+
     </Grid>
 </Window>
