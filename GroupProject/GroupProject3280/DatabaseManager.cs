@@ -11,6 +11,54 @@ using System.Threading.Tasks;
 
 namespace GroupProject3280
 {
+    #region DATABASE_OBJECTS
+
+    /// <summary>
+    /// Represents an entry in the Invoices table of the database
+    /// </summary>
+    public class Invoice {
+        /// <summary>The Invoice number</summary>
+        public readonly int InvoiceNum;
+        /// <summary>The Invoice creation date</summary>
+        public readonly DateTime InvoiceDate;
+        /// <summary>The Invoice total cost</summary>
+        public readonly int TotalCost;
+
+        /// <summary>Invoice constructor</summary>
+        /// <param name="pInvoiceNum">The Invoice number</param>
+        /// <param name="pInvoiceDate">The Invoice creation date</param>
+        /// <param name="pTotalCost">The Invoice total cost</param>
+        public Invoice(int pInvoiceNum, DateTime pInvoiceDate, int pTotalCost) {
+            InvoiceNum = pInvoiceNum;
+            InvoiceDate = pInvoiceDate;
+            TotalCost = pTotalCost;
+        }
+    }
+
+    /// <summary>
+    /// Represents an entry in the ItemDesc table of the database
+    /// </summary>
+    public class ItemDesc {
+        /// <summary>The Item Number associated with the description</summary>
+        public readonly string ItemCode;
+        /// <summary>The actual description text</summary>
+        public readonly string Desc;
+        /// <summary>The monetary cost of a single item</summary>
+        public readonly decimal Cost;
+
+        /// <summary>ItemDesc constructor</summary>
+        /// <param name="pItemCode">The Item Number of the item with this description</param>
+        /// <param name="pDesc">The actual description text</param>
+        /// <param name="pCost">The monetary cost of a single item</param>
+        public ItemDesc(string pItemCode, string pDesc, decimal pCost) {
+            ItemCode = pItemCode;
+            Desc = pDesc;
+            Cost = pCost;
+        }
+    }
+
+    #endregion
+
     #region DATABASE_MANAGER
 
     /// <summary>
