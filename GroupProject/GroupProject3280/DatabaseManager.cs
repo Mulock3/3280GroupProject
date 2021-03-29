@@ -57,6 +57,28 @@ namespace GroupProject3280
         }
     }
 
+    /// <summary>
+    /// Represents an entry in the LineItems table of the database
+    /// </summary>
+    public class LineItem {
+        /// <summary>The Invoice Num of the item</summary>
+        public readonly int InvoiceNum;
+        /// <summary>The Line Item Num (used for position in datagrid)</summary>
+        public readonly int LineItemNum;
+        /// <summary>The Item Code of the item</summary>
+        public readonly string ItemCode;
+
+        /// <summary>LineItem constructor</summary>
+        /// <param name="pInvoiceNum">The Invoice Num of the item</param>
+        /// <param name="pLineItemNum">The Line Item Num</param>
+        /// <param name="pItemCode">The Item Code of the item</param>
+        public LineItem(int pInvoiceNum, int pLineItemNum, string pItemCode) {
+            InvoiceNum = pInvoiceNum;
+            LineItemNum = pLineItemNum;
+            ItemCode = pItemCode;
+        }
+    }
+
     #endregion
 
     #region DATABASE_MANAGER
@@ -190,6 +212,8 @@ namespace GroupProject3280
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
+
+        #endregion
 
         #endregion
 

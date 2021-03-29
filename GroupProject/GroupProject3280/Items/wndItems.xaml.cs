@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace GroupProject3280.Items
 {
     /// <summary>
-    /// Interaction logic for clsItemsWindow.xaml
+    /// Interaction logic for wndItems.xaml
     /// </summary>
-    public partial class clsItemsWindow : Window
+    public partial class wndItems : Window
     {
-        public clsItemsWindow() {
+        public wndItems() {
             InitializeComponent();
         }
     }
