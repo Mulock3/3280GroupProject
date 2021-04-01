@@ -20,9 +20,21 @@ namespace GroupProject3280
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static readonly DatabaseManager Database = new DatabaseManager();    
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void debugItemsScreen_Click(object sender, RoutedEventArgs e) {
+            Search.wndSearch search = new Search.wndSearch();
+            search.ShowDialog();
+        }
+
+        private void debugSearchScreen_Click(object sender, RoutedEventArgs e) {
+            Items.wndItems items = new Items.wndItems();
+            items.ShowDialog();
         }
     }
 }

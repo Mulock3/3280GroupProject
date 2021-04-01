@@ -1,13 +1,98 @@
-﻿<Window x:Name="wndItemsWindow" x:Class="GroupProject3280.Items.wndItems"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GroupProject3280.Items"
+        xmlns:GroupProject3280="clr-namespace:GroupProject3280" x:Name="wndItemsWindow" x:Class="GroupProject3280.Items.wndItems"
         mc:Ignorable="d"
-        Title="wndItems" Height="450" Width="800" FontSize="14">
-    <Grid>
-        <Label x:Name="lItemsTitle" Content="Items" HorizontalAlignment="Left" Margin="359,10,0,0" VerticalAlignment="Top" FontSize="24"/>
+        Title="wndItems" FontSize="14" Loaded="wndItemsWindow_Loaded" Height="525" Width="700">
+    <Window.Resources>
+        <GroupProject3280:InvoiceDataSet x:Key="invoiceDataSet"/>
+        <CollectionViewSource x:Key="itemDescViewSource" Source="{Binding ItemDesc, Source={StaticResource invoiceDataSet}}"/>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource itemDescViewSource}">
+
+        <DataGrid x:Name="itemDescDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="10,10,347.333,15" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="itemCodeColumn" Binding="{Binding ItemCode}" Header="Item Code" Width="75"/>
+                <DataGridTextColumn x:Name="itemDescColumn" Binding="{Binding ItemDesc}" Header="Item Desc" Width="150"/>
+                <DataGridTextColumn x:Name="costColumn" Binding="{Binding Cost}" Header="Cost" Width="75"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <GroupBox x:Name="gbAddItem" Header="Add Item" HorizontalAlignment="Left" Height="172" Margin="362,14,0,0" VerticalAlignment="Top" Width="316">
+            <StackPanel x:Name="spAddItem" Margin="0,0,1,0.333" Orientation="Vertical" HorizontalAlignment="Center" Width="303">
+                <StackPanel x:Name="spAddItemL1" Margin="0,0,0.333,0" Orientation="Horizontal" Height="30">
+                    <Label x:Name="lAddItemNum" Content="Item Code" HorizontalAlignment="Left" Margin="38,0,0,-0.333" VerticalAlignment="Top"/>
+                    <TextBox x:Name="tbAddItemCode" HorizontalAlignment="Left" Height="29" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" Text="0000" VerticalAlignment="Top" Width="50"/>
+
+                </StackPanel>
+                <StackPanel x:Name="spAddItemLine2">
+                    <Label x:Name="lAddItemCodeErr" Content="Invalid Item Code" HorizontalAlignment="Left" Margin="114,-5,0,0" VerticalAlignment="Top" FontSize="12" Foreground="Red"/>
+                </StackPanel>
+                <StackPanel x:Name="spAddItemL3" Margin="0,0,0.333,0" Orientation="Horizontal" Height="30" HorizontalAlignment="Right">
+                    <Label x:Name="lAddItemDesc" Content="Item Description" HorizontalAlignment="Left" Margin="0,0,0,-0.333" VerticalAlignment="Top"/>
+                    <TextBox x:Name="tbAddItemDesc" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="29" Margin="0,0,0,-0.333" TextWrapping="Wrap" Text="TODO" VerticalAlignment="Top" Width="190"/>
+
+                </StackPanel>
+                <StackPanel x:Name="spAddItemLine4">
+                    <Label x:Name="lAddItemDescErr" Content="Invalid Item Description" HorizontalAlignment="Left" Margin="114,-5,0,0" VerticalAlignment="Top" FontSize="12" Foreground="Red"/>
+                </StackPanel>
+                <StackPanel x:Name="spAddItemL5" Margin="0,0,0.333,0" Orientation="Horizontal" Height="30">
+                    <Label x:Name="lAddItemCost" Content="Item Cost  $" HorizontalAlignment="Left" Margin="28,0,0,-0.333" VerticalAlignment="Top"/>
+                    <TextBox x:Name="tbAddItemCost" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="29" TextWrapping="Wrap" Text="000.00" VerticalAlignment="Top" Width="50"/>
+                    <Button x:Name="bAddItem" Content="Add" Width="43" Margin="96,0,0,0" IsEnabled="False"/>
+
+                </StackPanel>
+                <StackPanel x:Name="spAddItemLine6">
+                    <Label x:Name="lAddItemCostErr" Content="Invalid Item Cost" HorizontalAlignment="Left" Margin="114,-5,0,0" VerticalAlignment="Top" FontSize="12" Foreground="Red"/>
+                </StackPanel>
+
+            </StackPanel>
+        </GroupBox>
+        <GroupBox x:Name="gbEditItem" Header="Edit Item" Height="201" Margin="362,191,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="316">
+            <StackPanel x:Name="spEditItem" Margin="5,1,0,0" Orientation="Vertical" HorizontalAlignment="Center" Width="306">
+                <StackPanel x:Name="spEditItemL1" Margin="0,0,0.333,10" Orientation="Horizontal" Height="30">
+                    <Label Content="Select Item:" Margin="25,0,0,0"/>
+                    <ComboBox x:Name="cbEditItem" Width="190" Height="29" Margin="5,0,0,0" SelectionChanged="cbEditItem_SelectionChanged"/>
+
+
+                </StackPanel>
+                <StackPanel x:Name="spEditItemL2" Margin="0,0,0.333,10" Orientation="Horizontal" Height="30">
+                    <Label x:Name="lEditItemNum" Content="Item Code" HorizontalAlignment="Left" Margin="38,0,0,-0.333" VerticalAlignment="Top"/>
+                    <TextBox x:Name="tbEditItemCode" HorizontalAlignment="Left" Height="29" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" Text="0000" VerticalAlignment="Top" Width="50" IsEnabled="False" Margin="0"/>
+
+
+                </StackPanel>
+                <StackPanel x:Name="spEditItemL3" Margin="0,0,0.333,0" Orientation="Horizontal" Height="30">
+                    <Label x:Name="lEditItemName" Content="Item Description" HorizontalAlignment="Left" Margin="0,0,0,-0.333" VerticalAlignment="Top"/>
+                    <TextBox x:Name="tbEditItemDesc" VerticalContentAlignment="Center" Height="29" Margin="0,0,0,-0.333" TextWrapping="Wrap" Text="TODO" VerticalAlignment="Top" Width="190" HorizontalAlignment="Left" IsEnabled="False"/>
+
+                </StackPanel>
+                <StackPanel x:Name="spEditItemLine4">
+                    <Label x:Name="lEditItemDescErr" Content="Invalid Item Description" HorizontalAlignment="Left" Margin="113,-5,0,0" VerticalAlignment="Top" FontSize="12" Foreground="Red"/>
+                </StackPanel>
+                <StackPanel x:Name="spEditItemL5" Margin="0,0,0.333,0" Orientation="Horizontal" Height="30">
+                    <Label x:Name="lEditItemCost" Content="Item Cost  $" HorizontalAlignment="Left" Margin="28,0,0,-0.333" VerticalAlignment="Top"/>
+                    <TextBox x:Name="tbEditItemCost" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="29" TextWrapping="Wrap" Text="000.00" VerticalAlignment="Top" Width="50" IsEnabled="False"/>
+                    <Button x:Name="bEditItemSave" Content="Save" Width="43" Margin="95,0,0,0" IsEnabled="False" Click="bEditItemSave_Click"/>
+
+                </StackPanel>
+                <StackPanel x:Name="spEditItemLine6">
+                    <Label x:Name="lEditItemCostErr" Content="Invalid Item Cost" HorizontalAlignment="Left" Margin="114,-5,0,0" VerticalAlignment="Top" FontSize="12" Foreground="Red"/>
+                </StackPanel>
+
+            </StackPanel>
+        </GroupBox>
+        <GroupBox x:Name="gbDeleteItem" Header="Delete Item" HorizontalAlignment="Left" Height="84" Margin="362,397,0,0" VerticalAlignment="Top" Width="316">
+            <StackPanel x:Name="spDeleteItem" Margin="5,15,1,0" Orientation="Horizontal" Width="298" Height="38" VerticalAlignment="Top">
+                <ComboBox x:Name="cbDeleteItem" HorizontalAlignment="Left" VerticalAlignment="Top" Width="190" Height="29" SelectionChanged="cbDeleteItem_SelectionChanged"/>
+
+
+                <Button x:Name="bDeleteItem" Content="Delete" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="29" Margin="20,0,0,0" IsEnabled="False" Click="bDeleteItem_Click"/>
+            </StackPanel>
+        </GroupBox>
+
 
     </Grid>
 </Window>

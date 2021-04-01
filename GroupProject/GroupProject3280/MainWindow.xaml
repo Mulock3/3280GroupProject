@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button x:Name="debugSearchScreen" Content="Items" HorizontalAlignment="Left" Margin="193,90,0,0" VerticalAlignment="Top" Width="192" Height="75" Click="debugSearchScreen_Click"/>
+        <Button x:Name="debugItemsScreen" Content="Search" HorizontalAlignment="Left" Margin="431,230,0,0" VerticalAlignment="Top" Width="192" Height="75" Click="debugItemsScreen_Click"/>
+
     </Grid>
 </Window>

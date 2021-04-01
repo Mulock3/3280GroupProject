@@ -55,6 +55,12 @@ namespace GroupProject3280
             Desc = pDesc;
             Cost = pCost;
         }
+
+        /// <summary>String representation of this object</summary>
+        /// <returns>The item code and description</returns>
+        public override string ToString() {
+            return ItemCode + " " + Desc;
+        }
     }
 
     /// <summary>
