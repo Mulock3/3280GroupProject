@@ -37,3 +37,8 @@ C:\Users\sky01\Documents\CodeProjects\C#\cs3280\3280GroupProject\GroupProject\Gr
 C:\Users\sky01\Documents\CodeProjects\C#\cs3280\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.pdb
 C:\Users\sky01\Documents\CodeProjects\C#\cs3280\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\sky01\Documents\CodeProjects\C#\cs3280\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.csprojAssemblyReference.cache
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\bin\Debug\Invoice.accdb
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\Items\wndItems.g.cs
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280_Content.g.cs
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\Items\wndItems.baml

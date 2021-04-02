@@ -8,7 +8,10 @@ namespace GroupProject3280.Search
 {
     public static class clsSearchSQL
     {
-        private static string getAllInvoicesSQL = "SELECT* FROM Invoices";
+        /// <summary>
+        /// Base string to get all values from Invoices
+        /// </summary>
+        public static string getAllInvoicesSQL = "SELECT* FROM Invoices";
 
         #region SQL Preperations Statements
         /// <summary>
@@ -42,7 +45,7 @@ namespace GroupProject3280.Search
         /// <returns></returns>
         public static string GetInvoiceDataFromDate(string dateIN)
         {
-            string sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = " + dateIN;
+            string sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = CDate('" + dateIN + "')";
 
             return sSQL;
         }
@@ -66,7 +69,7 @@ namespace GroupProject3280.Search
         /// <returns></returns>
         public static string GetInvoiceDataFromIDandDate(string idIN, string dateIN)
         {
-            string sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + idIN + " AND InvoiceDate = " + dateIN;
+            string sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = " + idIN + " AND InvoiceDate = CDate('" + dateIN + "')";
 
             return sSQL;
         }
@@ -78,7 +81,7 @@ namespace GroupProject3280.Search
         /// <returns></returns>
         public static string GetInvoiceDataFromCostandDate(string costIN, string dateIN)
         {
-            string sSQL = "SELECT * FROM Invoices WHERE TotalCost = " + costIN + " AND InvoiceDate = " + dateIN;
+            string sSQL = "SELECT * FROM Invoices WHERE TotalCost = " + costIN + " AND InvoiceDate = CDate('" + dateIN + "')";
 
             return sSQL;
         }
@@ -90,7 +93,43 @@ namespace GroupProject3280.Search
         /// <returns></returns>
         public static string GetInvoiceDataFromCostandDateandID(string idIN, string costIN, string dateIN)
         {
-            string sSQL = "SELECT * FROM Invoices WHERE TotalCost = " + costIN + " AND InvoiceDate = " + dateIN + " AND InvoiceNum = " + idIN;
+            string sSQL = "SELECT * FROM Invoices WHERE TotalCost = " + costIN + " AND InvoiceDate = CDate('" + dateIN + "')" + " AND InvoiceNum = " + idIN;
+
+            return sSQL;
+        }
+
+        /// <summary>
+        /// Returns the SQL for getting all dates from Database
+        /// </summary>
+        /// <param name="sInvoiceID"></param>
+        /// <returns></returns>
+        public static string GetInvoiceDates()
+        {
+            string sSQL = "SELECT InvoiceDate FROM Invoices";
+
+            return sSQL;
+        }
+
+        /// <summary>
+        /// Returns the SQL for getting all invoice ids from Database
+        /// </summary>
+        /// <param name="sInvoiceID"></param>
+        /// <returns></returns>
+        public static string GetInvoiceIDs()
+        {
+            string sSQL = "SELECT Invoicenum FROM Invoices";
+
+            return sSQL;
+        }
+
+        /// <summary>
+        /// Returns the SQL for getting all charges from Database
+        /// </summary>
+        /// <param name="sInvoiceID"></param>
+        /// <returns></returns>
+        public static string GetChargeAmounts()
+        {
+            string sSQL = "SELECT TotalCost FROM Invoices";
 
             return sSQL;
         }
