@@ -33,6 +33,10 @@ namespace GroupProject3280.Search
         /// Gets the class for all of our search logic that we need
         /// </summary>
         private clsSearchLogic newCLSSearchLogic = new clsSearchLogic();
+        /// <summary>
+        /// Selected ID value; if invalid ID it is set to -1
+        /// </summary>
+        public int selectedInvoiceID = -1;
 
         /// <summary>
         /// Sets up the initial values for the Window (requires DB to have useful UI)
@@ -70,8 +74,10 @@ namespace GroupProject3280.Search
 
                 string invoiceID = invoiceIDView.Row[0].ToString();
 
+                selectedInvoiceID = Convert.ToInt32(invoiceID);
+
                 // TBI Opens the items page from the specified index
-                MessageBox.Show("Invoice Data for #" + invoiceID);
+                MessageBox.Show("Invoice Data for #" + invoiceID + " selected");
                 UpdateUI();
             }
             catch (Exception ex)
