@@ -71,8 +71,7 @@ namespace GroupProject3280.Search
                 string invoiceID = invoiceIDView.Row[0].ToString();
 
                 // TBI Opens the items page from the specified index
-                Items.wndItems items = new Items.wndItems();
-                items.ShowDialog();
+                MessageBox.Show("Invoice Data for #" + invoiceID);
                 UpdateUI();
             }
             catch (Exception ex)
