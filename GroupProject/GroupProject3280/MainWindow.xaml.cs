@@ -20,7 +20,8 @@ namespace GroupProject3280
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static readonly DatabaseManager Database = new DatabaseManager();    
+        public static readonly DatabaseManager Database = new DatabaseManager();
+        public int selectedID = -1;
 
         public MainWindow()
         {
@@ -28,7 +29,8 @@ namespace GroupProject3280
         }
 
         private void debugItemsScreen_Click(object sender, RoutedEventArgs e) {
-            Search.wndSearch search = new Search.wndSearch();
+            int idIncoming = -1;
+            Search.wndSearch search = new Search.wndSearch(this);
             search.ShowDialog();
         }
 

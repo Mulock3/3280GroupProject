@@ -15,7 +15,8 @@
         <Label x:Name="dateLabel" Content="Date" HorizontalAlignment="Left" Height="26" Margin="246,36,0,0" VerticalAlignment="Top" Width="36"/>
         <Label x:Name="invoiceLabel" Content="Invoice #" HorizontalAlignment="Left" Height="26" Margin="360,36,0,0" VerticalAlignment="Top" Width="60"/>
         <Label x:Name="chargeLabel" Content="Charge Amount" HorizontalAlignment="Left" Height="26" Margin="466,36,0,0" VerticalAlignment="Top" Width="100"/>
-        <Button Content="Select Invoice" HorizontalAlignment="Left" Margin="349,389,0,0" VerticalAlignment="Top" Width="83" Click="InvoiceSelected"/>
+        <Button Content="Select Invoice" HorizontalAlignment="Left" Margin="611,391,0,0" VerticalAlignment="Top" Width="83" Click="InvoiceSelected"/>
+        <Button x:Name="Cancel" Content="Cancel" HorizontalAlignment="Left" Margin="699,391,0,0" VerticalAlignment="Top" Width="83" Click="CancelButton"/>
 
     </Grid>
 </Window>

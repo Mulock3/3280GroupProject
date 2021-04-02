@@ -37,15 +37,17 @@ namespace GroupProject3280.Search
         /// Selected ID value; if invalid ID it is set to -1
         /// </summary>
         public int selectedInvoiceID = -1;
+        MainWindow currentMain;
 
         /// <summary>
         /// Sets up the initial values for the Window (requires DB to have useful UI)
         /// </summary>
-        public wndSearch()
+        public wndSearch(MainWindow currentMainIN)
         {
             InitializeComponent();
 
             UpdateUI();
+            currentMain = currentMainIN;
         }
 
         #region Button and Combo Boxes
@@ -78,7 +80,8 @@ namespace GroupProject3280.Search
 
                 // TBI Opens the items page from the specified index
                 MessageBox.Show("Invoice Data for #" + invoiceID + " selected");
-                UpdateUI();
+                currentMain.selectedID = Convert.ToInt32(invoiceID);
+                this.Close();
             }
             catch (Exception ex)
             {
@@ -136,6 +139,16 @@ namespace GroupProject3280.Search
                 MessageBox.Show(ex.Message.ToString());
             }
         }
+
+        /// <summary>
+        /// Closes the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CancelButton(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
         #endregion
 
         /// <summary>
@@ -168,5 +181,7 @@ namespace GroupProject3280.Search
                 MessageBox.Show(e.Message.ToString());
             }
         }
+
+
     }
 }
