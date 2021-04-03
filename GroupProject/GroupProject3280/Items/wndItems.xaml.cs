@@ -90,5 +90,16 @@ namespace GroupProject3280.Items
             cbDeleteItem.SelectedItem = null;
             bDeleteItem.IsEnabled = false;
         }
+
+        private void bAddItem_Click(object sender, RoutedEventArgs e) {
+            // TODO validate user-entered data
+
+            // TODO call Logic.AddItemDesc(pItemCode, pItemDesc, pCost)
+
+            // Reset the Add Item section
+            tbAddItemCode.Text = "";
+            tbAddItemDesc.Text = "";
+            tbAddItemCost.Text = "";
+        }
     }
 }
