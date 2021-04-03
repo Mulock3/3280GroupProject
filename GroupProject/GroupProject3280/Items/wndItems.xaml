@@ -41,7 +41,7 @@
                 <StackPanel x:Name="spAddItemL5" Margin="0,0,0.333,0" Orientation="Horizontal" Height="30">
                     <Label x:Name="lAddItemCost" Content="Item Cost  $" HorizontalAlignment="Left" Margin="28,0,0,-0.333" VerticalAlignment="Top"/>
                     <TextBox x:Name="tbAddItemCost" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="29" TextWrapping="Wrap" Text="000.00" VerticalAlignment="Top" Width="50"/>
-                    <Button x:Name="bAddItem" Content="Add" Width="43" Margin="96,0,0,0" IsEnabled="False"/>
+                    <Button x:Name="bAddItem" Content="Add" Width="43" Margin="96,0,0,0" Click="bAddItem_Click"/>
 
                 </StackPanel>
                 <StackPanel x:Name="spAddItemLine6">
