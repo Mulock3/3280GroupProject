@@ -25,7 +25,7 @@ namespace GroupProject3280.Items
 
         public wndItems() {
             InitializeComponent();
-            Logic = new clsItemsLogic();
+            Logic = new clsItemsLogic(MainWindow.Database);
             SetEditEnabled(false);
             // Hide error labels
             lAddItemCodeErr.Visibility = Visibility.Hidden;
@@ -59,7 +59,7 @@ namespace GroupProject3280.Items
             System.Windows.Data.CollectionViewSource itemDescViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("itemDescViewSource")));
             itemDescViewSource.View.MoveCurrentToFirst();
             // load combo boxes
-            cbDeleteItem.ItemsSource = clsItemsSQL.GetItemDesc(MainWindow.Database);
+            cbDeleteItem.ItemsSource = Logic.GetItemDesc();
         }
 
         private void cbDeleteItem_SelectionChanged(object sender, SelectionChangedEventArgs e) {

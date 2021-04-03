@@ -10,7 +10,32 @@ namespace GroupProject3280.Items
 {
     public class clsItemsLogic
     {
+        private DatabaseManager database;
 
-        
+        public clsItemsLogic(DatabaseManager pDatabase) {
+            database = pDatabase;
+        }
+
+        /// <summary>
+        /// Queries the database for all ItemDesc objects
+        /// </summary>
+        /// <returns>A List of ItemDesc objects</returns>
+        public List<ItemDesc> GetItemDesc() {
+            List<ItemDesc> list = new List<ItemDesc>();
+            try {
+                DataSet ds;
+                int rowCount = 0;
+                // execute SQL statement
+                ds = database.ExecuteSQLStatement(clsItemsSQL.GetItemDesc(), ref rowCount);
+                // populate the list
+                for (int i = 0; i < rowCount; i++) {
+                    list.Add(new ItemDesc((string)ds.Tables[0].Rows[i][0], (string)ds.Tables[0].Rows[i][1], (decimal)ds.Tables[0].Rows[i][2]));
+                }
+            } catch (Exception e) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
+            return list;
+        }
+
     }
 }
