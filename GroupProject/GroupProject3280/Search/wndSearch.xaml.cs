@@ -37,12 +37,12 @@ namespace GroupProject3280.Search
         /// Selected ID value; if invalid ID it is set to -1
         /// </summary>
         public int selectedInvoiceID = -1;
-        MainWindow currentMain;
+        Main.wndMain currentMain;
 
         /// <summary>
         /// Sets up the initial values for the Window (requires DB to have useful UI)
         /// </summary>
-        public wndSearch(MainWindow currentMainIN)
+        public wndSearch(Main.wndMain currentMainIN)
         {
             InitializeComponent();
 
@@ -147,7 +147,7 @@ namespace GroupProject3280.Search
         /// <param name="e"></param>
         private void CancelButton(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.Hide();
         }
         #endregion
 

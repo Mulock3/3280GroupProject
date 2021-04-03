@@ -30,13 +30,19 @@ namespace GroupProject3280
 
         private void debugItemsScreen_Click(object sender, RoutedEventArgs e) {
             int idIncoming = -1;
-            Search.wndSearch search = new Search.wndSearch(this);
-            search.ShowDialog();
+            //Search.wndSearch search = new Search.wndSearch(this);
+            //search.ShowDialog();
         }
 
         private void debugSearchScreen_Click(object sender, RoutedEventArgs e) {
             Items.wndItems items = new Items.wndItems();
             items.ShowDialog();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Main.wndMain wndMain = new Main.wndMain();
+            wndMain.ShowDialog();
         }
     }
 }
