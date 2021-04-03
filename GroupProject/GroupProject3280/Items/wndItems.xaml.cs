@@ -20,9 +20,16 @@ namespace GroupProject3280.Items
     /// </summary>
     public partial class wndItems : Window
     {
+        #region ATTRIBUTES
 
-        private clsItemsLogic Logic;    
+        /// <summary>Helper class that handles interaction with the database</summary>
+        private clsItemsLogic Logic;
 
+        #endregion
+
+        #region METHODS
+
+        /// <summary>wndItems constructor</summary>
         public wndItems() {
             InitializeComponent();
             Logic = new clsItemsLogic(MainWindow.Database);
@@ -50,6 +57,14 @@ namespace GroupProject3280.Items
             bEditItemSave.IsEnabled = enabled;
         }
 
+        #region EVENT_METHODS
+
+        /// <summary>
+        /// Called when the window is first loaded.
+        /// Initializes the data grid with the database bindings.
+        /// </summary>
+        /// <param name="sender">The window</param>
+        /// <param name="e">The event args</param>
         private void wndItemsWindow_Loaded(object sender, RoutedEventArgs e) {
 
             GroupProject3280.InvoiceDataSet invoiceDataSet = ((GroupProject3280.InvoiceDataSet)(this.FindResource("invoiceDataSet")));
@@ -62,15 +77,42 @@ namespace GroupProject3280.Items
             cbDeleteItem.ItemsSource = Logic.GetItemDesc();
         }
 
+        /// <summary>
+        /// Called when the Delete Item combo box changes.
+        /// Enables the delete item button.
+        /// </summary>
+        /// <param name="sender">The combo box that was changed</param>
+        /// <param name="e">The event args</param>
         private void cbDeleteItem_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             bDeleteItem.IsEnabled = true;
-            // TODO delete the item
         }
 
+        /// <summary>
+        /// Called when the Edit Item combo box changes.
+        /// Populates textboxes and enables the rest of the Edit Item section.
+        /// </summary>
+        /// <param name="sender">The combo box that was changed</param>
+        /// <param name="e">The event args</param>
         private void cbEditItem_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             SetEditEnabled(true);
+            // get the selected item from the database
+            if (cbEditItem.SelectedItem is ItemDesc) {
+                List<ItemDesc> list = Logic.GetItemDesc(((ItemDesc)cbEditItem.SelectedItem).ItemCode);
+                // use the first item in the list to populate textboxes
+                if(list.Count > 0) {
+                    tbEditItemCode.Text = list[0].ItemCode;
+                    tbEditItemDesc.Text = list[0].Desc;
+                    tbEditItemCost.Text = list[0].Cost.ToString();
+                }
+            }
         }
 
+        /// <summary>
+        /// Called when the Edit Item save button is clicked.
+        /// Validates the textboxes and updates the item desc
+        /// </summary>
+        /// <param name="sender">The button that was clicked</param>
+        /// <param name="e">The event args</param>
         private void bEditItemSave_Click(object sender, RoutedEventArgs e) {
             // TODO validate information and save to database
 
@@ -83,23 +125,65 @@ namespace GroupProject3280.Items
             SetEditEnabled(false);
         }
 
+        /// <summary>
+        /// Called when the Delete Item button is clicked.
+        /// Deletes the selected item from the database
+        /// </summary>
+        /// <param name="sender">The button that was clicked</param>
+        /// <param name="e">The event args</param>
         private void bDeleteItem_Click(object sender, RoutedEventArgs e) {
-            // TODO delete the selected item from the database
+            // delete the selected item from the database
+            if (cbDeleteItem.SelectedItem is ItemDesc) {
+                Logic.DeleteItem(((ItemDesc)cbDeleteItem.SelectedItem).ItemCode);
+            }
             // Reset the Delete Item section
             cbDeleteItem.SelectedIndex = -1;
             cbDeleteItem.SelectedItem = null;
             bDeleteItem.IsEnabled = false;
         }
 
+        /// <summary>
+        /// Called when the Add Item button is clicked.
+        /// Validates textbox entries and either shows error labels
+        /// or adds the item to the database
+        /// </summary>
+        /// <param name="sender">The button that was clicked</param>
+        /// <param name="e">The event args</param>
         private void bAddItem_Click(object sender, RoutedEventArgs e) {
-            // TODO validate user-entered data
-
-            // TODO call Logic.AddItemDesc(pItemCode, pItemDesc, pCost)
-
+            // hide error labels
+            lAddItemCodeErr.Visibility = Visibility.Hidden;
+            lAddItemDescErr.Visibility = Visibility.Hidden;
+            lAddItemCostErr.Visibility = Visibility.Hidden;
+            // get the values of user-entered data
+            string itemCode = tbAddItemCode.Text;
+            string itemDesc = tbAddItemDesc.Text;
+            string itemCost = tbAddItemCost.Text;
+            decimal dItemCost = -1;
+            // validate item code
+            if(!Logic.ValidateAddCode(itemCode)) {
+                lAddItemCodeErr.Visibility = Visibility.Visible;
+                return;
+            }
+            // validate item desc
+            if(!Logic.ValidateAddDesc(itemDesc)) {
+                lAddItemDescErr.Visibility = Visibility.Visible;
+                return;
+            }
+            // validate item cost
+            if(!Logic.ValidateAddCost(itemCost, out dItemCost)) {
+                lAddItemCostErr.Visibility = Visibility.Visible;
+                return;
+            }
+            // Add the data
+            Logic.AddItemDesc(itemCode, itemDesc, dItemCost);
             // Reset the Add Item section
             tbAddItemCode.Text = "";
             tbAddItemDesc.Text = "";
             tbAddItemCost.Text = "";
         }
+
+        #endregion
+
+        #endregion
     }
 }

@@ -20,6 +20,9 @@ namespace GroupProject3280.Items
         private const string sqlAddItem = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Cost) VALUES('{0}', '{1}', {2})";
         /// <summary>SQL format to delete an item description</summary>
         private const string sqlDeleteItem = "DELETE FROM ItemDesc WHERE ItemCode = '{0}'";
+        /// <summary>SQL format to list item descriptions containing an item</summary>
+        private const string sqlGetItemDescFromItem = "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc WHERE ItemCode = '{0}'";
+
 
         /// <summary>
         /// Creates an SQL statement to get all item descriptions
@@ -68,6 +71,10 @@ namespace GroupProject3280.Items
         /// <returns>The SQL statement</returns>
         public static string DeleteItemDesc(string pItemCode) {
             return String.Format(sqlDeleteItem, pItemCode);
+        }
+
+        public static string GetItemDescFromItem(string pItemCode) {
+            return String.Format(sqlGetItemDescFromItem, pItemCode);
         }
 
     }
