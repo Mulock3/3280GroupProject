@@ -72,14 +72,21 @@ namespace GroupProject3280.Items
         /// <param name="pItemCode">The item code to delete</param>
         /// <returns>True if the item desc was deleted</returns>
         public bool DeleteItem(string pItemCode) {
+            try {
+                // if the item is present on any invoice, do not delete
+                if (GetInvoicesFor(pItemCode).Count > 0) {
+                    return false;
+                }
+                DataSet ds;
+                int rowCount = 0;
+                // execute SQL statement
+                ds = Database.ExecuteSQLStatement(clsItemsSQL.DeleteItemDesc(pItemCode), ref rowCount);
+                // TODO push changes to database?
 
-            // if the item is present on any invoice, do not delete
-            if (GetInvoicesFor(pItemCode).Count > 0) {
-                return false;
+                return true;
+            } catch (Exception e) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
             }
-            // TODO delete from database
-
-            return true;
         }
 
         /// <summary>
@@ -169,21 +176,21 @@ namespace GroupProject3280.Items
         }
 
         /// <summary>
-        /// Queries the database for all Invoice objects
+        /// Queries the database for all InvoiceNums of Invoices
         /// containing the given Item Code
         /// </summary>
         /// <param name="pItemCode">The item code</param>
         /// <returns>A List of Invoice objects. May be empty</returns>
-        public List<Invoice> GetInvoicesFor(string pItemCode) {
-            List<Invoice> list = new List<Invoice>();
+        public List<int> GetInvoicesFor(string pItemCode) {
+            List<int> list = new List<int>();
             try {
                 DataSet ds;
                 int rowCount = 0;
                 // execute SQL statement
-                ds = Database.ExecuteSQLStatement(clsItemsSQL.GetItemDesc(), ref rowCount);
+                ds = Database.ExecuteSQLStatement(clsItemsSQL.GetInvoicesFromItem(pItemCode), ref rowCount);
                 // populate the list
                 for (int i = 0; i < rowCount; i++) {
-                    list.Add(new Invoice((Int32)ds.Tables[0].Rows[i][0], (DateTime)ds.Tables[0].Rows[i][1], (Int32)ds.Tables[0].Rows[i][2]));
+                    list.Add((int)ds.Tables[0].Rows[i][0]);
                 }
             } catch (Exception e) {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);

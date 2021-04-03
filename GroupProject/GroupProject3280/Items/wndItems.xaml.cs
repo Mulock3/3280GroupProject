@@ -57,6 +57,14 @@ namespace GroupProject3280.Items
             bEditItemSave.IsEnabled = enabled;
         }
 
+        /// <summary>
+        /// Used to update combo boxes to the latest version of the database
+        /// </summary>
+        private void LoadComboBoxes() {
+            cbDeleteItem.ItemsSource = Logic.GetItemDesc();
+            cbEditItem.ItemsSource = Logic.GetItemDesc();
+        }
+
         #region EVENT_METHODS
 
         /// <summary>
@@ -66,15 +74,19 @@ namespace GroupProject3280.Items
         /// <param name="sender">The window</param>
         /// <param name="e">The event args</param>
         private void wndItemsWindow_Loaded(object sender, RoutedEventArgs e) {
-
-            GroupProject3280.InvoiceDataSet invoiceDataSet = ((GroupProject3280.InvoiceDataSet)(this.FindResource("invoiceDataSet")));
-            // Load data into the table ItemDesc. You can modify this code as needed.
-            GroupProject3280.InvoiceDataSetTableAdapters.ItemDescTableAdapter invoiceDataSetItemDescTableAdapter = new GroupProject3280.InvoiceDataSetTableAdapters.ItemDescTableAdapter();
-            invoiceDataSetItemDescTableAdapter.Fill(invoiceDataSet.ItemDesc);
-            System.Windows.Data.CollectionViewSource itemDescViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("itemDescViewSource")));
-            itemDescViewSource.View.MoveCurrentToFirst();
-            // load combo boxes
-            cbDeleteItem.ItemsSource = Logic.GetItemDesc();
+            try {
+                GroupProject3280.InvoiceDataSet invoiceDataSet = ((GroupProject3280.InvoiceDataSet)(this.FindResource("invoiceDataSet")));
+                // Load data into the table ItemDesc. You can modify this code as needed.
+                GroupProject3280.InvoiceDataSetTableAdapters.ItemDescTableAdapter invoiceDataSetItemDescTableAdapter = new GroupProject3280.InvoiceDataSetTableAdapters.ItemDescTableAdapter();
+                invoiceDataSetItemDescTableAdapter.Fill(invoiceDataSet.ItemDesc);
+                System.Windows.Data.CollectionViewSource itemDescViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("itemDescViewSource")));
+                itemDescViewSource.View.MoveCurrentToFirst();
+                // load combo boxes
+                LoadComboBoxes();
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
+            }
         }
 
         /// <summary>
@@ -94,16 +106,21 @@ namespace GroupProject3280.Items
         /// <param name="sender">The combo box that was changed</param>
         /// <param name="e">The event args</param>
         private void cbEditItem_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            SetEditEnabled(true);
-            // get the selected item from the database
-            if (cbEditItem.SelectedItem is ItemDesc) {
-                List<ItemDesc> list = Logic.GetItemDesc(((ItemDesc)cbEditItem.SelectedItem).ItemCode);
-                // use the first item in the list to populate textboxes
-                if(list.Count > 0) {
-                    tbEditItemCode.Text = list[0].ItemCode;
-                    tbEditItemDesc.Text = list[0].Desc;
-                    tbEditItemCost.Text = list[0].Cost.ToString();
+            try {
+                SetEditEnabled(true);
+                // get the selected item from the database
+                if (cbEditItem.SelectedItem is ItemDesc) {
+                    List<ItemDesc> list = Logic.GetItemDesc(((ItemDesc)cbEditItem.SelectedItem).ItemCode);
+                    // use the first item in the list to populate textboxes
+                    if (list.Count > 0) {
+                        tbEditItemCode.Text = list[0].ItemCode;
+                        tbEditItemDesc.Text = list[0].Desc;
+                        tbEditItemCost.Text = list[0].Cost.ToString();
+                    }
                 }
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
             }
         }
 
@@ -114,15 +131,22 @@ namespace GroupProject3280.Items
         /// <param name="sender">The button that was clicked</param>
         /// <param name="e">The event args</param>
         private void bEditItemSave_Click(object sender, RoutedEventArgs e) {
-            // TODO validate information and save to database
+            try {
+                // TODO validate information and save to database
 
-            // Reset the Edit Item section
-            cbEditItem.SelectedIndex = -1;
-            cbEditItem.SelectedItem = null;
-            tbEditItemCode.Text = "";
-            tbEditItemDesc.Text = "";
-            tbEditItemCost.Text = "";
-            SetEditEnabled(false);
+                // Reset the Edit Item section
+                cbEditItem.SelectedIndex = -1;
+                cbEditItem.SelectedItem = null;
+                tbEditItemCode.Text = "";
+                tbEditItemDesc.Text = "";
+                tbEditItemCost.Text = "";
+                SetEditEnabled(false);
+                // Update combo boxes
+                LoadComboBoxes();
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
+            }
         }
 
         /// <summary>
@@ -132,14 +156,22 @@ namespace GroupProject3280.Items
         /// <param name="sender">The button that was clicked</param>
         /// <param name="e">The event args</param>
         private void bDeleteItem_Click(object sender, RoutedEventArgs e) {
-            // delete the selected item from the database
-            if (cbDeleteItem.SelectedItem is ItemDesc) {
-                Logic.DeleteItem(((ItemDesc)cbDeleteItem.SelectedItem).ItemCode);
+            try {
+                // delete the selected item from the database
+                if (cbDeleteItem.SelectedItem is ItemDesc) {
+                    Logic.DeleteItem(((ItemDesc)cbDeleteItem.SelectedItem).ItemCode);
+                }
+                // Reset the Delete Item section
+                cbDeleteItem.SelectedIndex = -1;
+                cbDeleteItem.SelectedItem = null;
+                bDeleteItem.IsEnabled = false;
+                // Update combo boxes
+                LoadComboBoxes();
+            } catch(Exception ex) {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
             }
-            // Reset the Delete Item section
-            cbDeleteItem.SelectedIndex = -1;
-            cbDeleteItem.SelectedItem = null;
-            bDeleteItem.IsEnabled = false;
+            
         }
 
         /// <summary>
@@ -150,36 +182,41 @@ namespace GroupProject3280.Items
         /// <param name="sender">The button that was clicked</param>
         /// <param name="e">The event args</param>
         private void bAddItem_Click(object sender, RoutedEventArgs e) {
-            // hide error labels
-            lAddItemCodeErr.Visibility = Visibility.Hidden;
-            lAddItemDescErr.Visibility = Visibility.Hidden;
-            lAddItemCostErr.Visibility = Visibility.Hidden;
-            // get the values of user-entered data
-            string itemCode = tbAddItemCode.Text;
-            string itemDesc = tbAddItemDesc.Text;
-            string itemCost = tbAddItemCost.Text;
-            decimal dItemCost = -1;
-            // validate item code
-            if(!Logic.ValidateAddCode(itemCode)) {
-                lAddItemCodeErr.Visibility = Visibility.Visible;
-                return;
+            try {
+                // hide error labels
+                lAddItemCodeErr.Visibility = Visibility.Hidden;
+                lAddItemDescErr.Visibility = Visibility.Hidden;
+                lAddItemCostErr.Visibility = Visibility.Hidden;
+                // get the values of user-entered data
+                string itemCode = tbAddItemCode.Text;
+                string itemDesc = tbAddItemDesc.Text;
+                string itemCost = tbAddItemCost.Text;
+                decimal dItemCost = -1;
+                // validate item code
+                if (!Logic.ValidateAddCode(itemCode)) {
+                    lAddItemCodeErr.Visibility = Visibility.Visible;
+                    return;
+                }
+                // validate item desc
+                if (!Logic.ValidateAddDesc(itemDesc)) {
+                    lAddItemDescErr.Visibility = Visibility.Visible;
+                    return;
+                }
+                // validate item cost
+                if (!Logic.ValidateAddCost(itemCost, out dItemCost)) {
+                    lAddItemCostErr.Visibility = Visibility.Visible;
+                    return;
+                }
+                // Add the data
+                Logic.AddItemDesc(itemCode, itemDesc, dItemCost);
+                // Reset the Add Item section
+                tbAddItemCode.Text = "";
+                tbAddItemDesc.Text = "";
+                tbAddItemCost.Text = "";
+            } catch (Exception ex) {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Close();
             }
-            // validate item desc
-            if(!Logic.ValidateAddDesc(itemDesc)) {
-                lAddItemDescErr.Visibility = Visibility.Visible;
-                return;
-            }
-            // validate item cost
-            if(!Logic.ValidateAddCost(itemCost, out dItemCost)) {
-                lAddItemCostErr.Visibility = Visibility.Visible;
-                return;
-            }
-            // Add the data
-            Logic.AddItemDesc(itemCode, itemDesc, dItemCost);
-            // Reset the Add Item section
-            tbAddItemCode.Text = "";
-            tbAddItemDesc.Text = "";
-            tbAddItemCost.Text = "";
         }
 
         #endregion

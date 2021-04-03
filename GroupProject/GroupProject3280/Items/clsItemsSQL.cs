@@ -13,7 +13,7 @@ namespace GroupProject3280.Items
         /// <summary>SQL format to list item descriptions</summary>
         private const string sqlGetItemDesc = "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
         /// <summary>SQL format to list invoices containing an item</summary>
-        private const string sqlGetInvoicesFromItem = "SELECT DISTINCT(InvoiceNum) FROM LineItems WHERE ItemCode = '{1}'";
+        private const string sqlGetInvoicesFromItem = "SELECT DISTINCT(InvoiceNum) FROM LineItems WHERE ItemCode = '{0}'";
         /// <summary>SQL format to update an item description</summary>
         private const string sqlUpdateItemDesc = "UPDATE ItemDesc SET ItemDesc = '{0}', Cost = {1} where ItemCode = '{2}'";
         /// <summary>SQL format to add an item description</summary>
