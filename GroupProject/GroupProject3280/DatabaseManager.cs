@@ -106,7 +106,7 @@ namespace GroupProject3280
         /// <summary>DBManager constructor</summary>
         public DatabaseManager() {
             // Note: the Microsoft.ACE.OLEDB.12.0 Provider is required for .accdb files
-            sConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data source= " + Directory.GetCurrentDirectory() + "\\Invoice.accdb";
+            sConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data source= " + Directory.GetCurrentDirectory() + "\\Invoice.accdb";
         }
 
         #region EXECUTE_SQL_METHODS
