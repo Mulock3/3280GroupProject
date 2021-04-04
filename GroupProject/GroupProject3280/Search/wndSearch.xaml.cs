@@ -147,7 +147,29 @@ namespace GroupProject3280.Search
         /// <param name="e"></param>
         private void CancelButton(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            this.Close();
+        }
+
+        /// <summary>
+        /// Clears selections from UI
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void clear(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Simply sets them to their blank state
+                dateSelector.SelectedIndex = dateSelector.Items.Count - 1;
+                invoiceIDSelector.SelectedIndex = invoiceIDSelector.Items.Count - 1;
+                chargeAmountSelector.SelectedIndex = chargeAmountSelector.Items.Count - 1;
+
+                UpdateUI();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
         }
         #endregion
 

@@ -66,3 +66,5 @@ E:\College\Bill\Weber\CS 3280\Git\3280GroupProject\GroupProject\GroupProject3280
 E:\College\Bill\Weber\CS 3280\Git\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.csproj.CoreCompileInputs.cache
 E:\College\Bill\Weber\CS 3280\Git\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.exe
 E:\College\Bill\Weber\CS 3280\Git\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\GroupProject3280.pdb
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\Main\wndMain.g.cs
+C:\Users\muloc\Documents\GitHub\3280GroupProject\GroupProject\GroupProject3280\obj\Debug\Main\wndMain.baml
