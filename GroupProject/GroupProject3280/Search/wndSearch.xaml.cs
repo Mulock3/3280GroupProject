@@ -203,6 +203,11 @@ namespace GroupProject3280.Search
             }
         }
 
+        /// <summary>
+        /// Overrides the closing method (using XAML) 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClosing(object sender, CancelEventArgs e)
         {
             this.Hide();
