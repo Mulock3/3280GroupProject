@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GroupProject3280.Search"
         mc:Ignorable="d"
-        Title="Search" Height="485" Width="800" ResizeMode="NoResize">
+        Title="Search" Height="485" Width="800" ResizeMode="NoResize" Closing="OnClosing">
     <Grid Height="430">
         <Label x:Name="mainLabel" Content="Invoice Table" HorizontalAlignment="Left" Height="30" Margin="349,10,0,0" VerticalAlignment="Top" Width="83" FontWeight="Bold"/>
         <DataGrid x:Name="DataTable" HorizontalAlignment="Left" Height="270" Margin="10,114,0,0" VerticalAlignment="Top" Width="772" CanUserAddRows="False"/>

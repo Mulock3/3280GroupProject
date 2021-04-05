@@ -67,7 +67,7 @@ namespace GroupProject3280.Main
         {
             InitializeComponent();
             itemsWindow = new Items.wndItems();
-            searchWindow = new Search.wndSearch(this);
+            searchWindow = new Search.wndSearch();
             mainLogic = new clsMainLogic();
             isInvoiceBeingEdited = false;
             cboItems.ItemsSource = mainLogic.Items;
@@ -83,8 +83,17 @@ namespace GroupProject3280.Main
         private void InvoiceSearchMenuItem_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
+            searchWindow.UpdateUI();
             searchWindow.ShowDialog(); // If an invoice was selected, this class has the ability to access and modify the current selectedID.
             this.Show();
+            if (searchWindow.selectedInvoiceID != -1)
+            {
+                selectedID = searchWindow.selectedInvoiceID;
+            }
+            else
+            {
+                MessageBox.Show("No Invoice ID Selected");
+            }
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlTypes;
 using System.Linq;
@@ -37,17 +38,15 @@ namespace GroupProject3280.Search
         /// Selected ID value; if invalid ID it is set to -1
         /// </summary>
         public int selectedInvoiceID = -1;
-        Main.wndMain currentMain;
 
         /// <summary>
         /// Sets up the initial values for the Window (requires DB to have useful UI)
         /// </summary>
-        public wndSearch(Main.wndMain currentMainIN)
+        public wndSearch()
         {
             InitializeComponent();
 
             UpdateUI();
-            currentMain = currentMainIN;
         }
 
         #region Button and Combo Boxes
@@ -80,8 +79,8 @@ namespace GroupProject3280.Search
 
                 // TBI Opens the items page from the specified index
                 MessageBox.Show("Invoice Data for #" + invoiceID + " selected");
-                currentMain.selectedID = Convert.ToInt32(invoiceID);
-                this.Close();
+                selectedInvoiceID = Convert.ToInt32(invoiceID);
+                this.Hide();
             }
             catch (Exception ex)
             {
@@ -147,7 +146,7 @@ namespace GroupProject3280.Search
         /// <param name="e"></param>
         private void CancelButton(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.Hide();
         }
 
         /// <summary>
@@ -176,7 +175,7 @@ namespace GroupProject3280.Search
         /// <summary>
         /// Updates the UI to make sure you have what you want
         /// </summary>
-        private void UpdateUI()
+        public void UpdateUI()
         {
             try
             {
@@ -204,6 +203,10 @@ namespace GroupProject3280.Search
             }
         }
 
-
+        private void OnClosing(object sender, CancelEventArgs e)
+        {
+            this.Hide();
+            e.Cancel = true;
+        }
     }
 }
