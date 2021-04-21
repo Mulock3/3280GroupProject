@@ -67,20 +67,20 @@ namespace GroupProject3280.Items
 
 
         /// <summary>
-        /// Attempts to delete an item desc from the database
+        /// Attempts to delete an item desc from the database if there are 
+        /// no invoices associated with the item.
         /// </summary>
         /// <param name="pItemCode">The item code to delete</param>
-        /// <returns>True if the item desc was deleted</returns>
-        public bool DeleteItem(string pItemCode) {
+        /// <returns>The list of invoices associated with this item, if any</returns>
+        public List<int> DeleteItem(string pItemCode) {
             try {
                 // if the item is present on any invoice, do not delete
-                if (GetInvoicesFor(pItemCode).Count > 0) {
-                    return false;
+                List<int> invoices = GetInvoicesFor(pItemCode);
+                if (invoices.Count == 0) {
+                    // execute SQL statement
+                    Database.ExecuteNonQuery(clsItemsSQL.DeleteItemDesc(pItemCode));
                 }
-                int rowCount = 0;
-                // execute SQL statement
-                rowCount = Database.ExecuteNonQuery(clsItemsSQL.DeleteItemDesc(pItemCode));
-                return rowCount > 0;
+                return invoices;
             } catch (Exception e) {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
             }

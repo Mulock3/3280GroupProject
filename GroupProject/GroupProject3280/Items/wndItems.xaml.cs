@@ -200,7 +200,8 @@ namespace GroupProject3280.Items
                     ItemDesc item = (ItemDesc)cbDeleteItem.SelectedItem;
                     string desc = item.Desc;
                     string code = item.ItemCode;
-                    if (Logic.DeleteItem(code)) {
+                    List<int> invoices = Logic.DeleteItem(code);
+                    if (invoices.Count == 0) {
                         // Reset the Delete Item section
                         cbDeleteItem.SelectedIndex = -1;
                         cbDeleteItem.SelectedItem = null;
@@ -211,7 +212,10 @@ namespace GroupProject3280.Items
                         string message = String.Format("Deleted '{0}' ({1})", desc, code);
                         MessageBox.Show(message, "Delete Item success", MessageBoxButton.OK, MessageBoxImage.Information);
                     } else {
-                        string message = String.Format("Cannot delete '{0}' ({1}). Make sure there are no invoices using this item.", desc, code);
+                        string message = String.Format("Cannot delete '{0}' ({1}) because the item is being used on the following invoices:\n", desc, code);
+                        foreach(int i in invoices) {
+                            message += String.Format("{0}\n", i);
+                        }
                         MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
