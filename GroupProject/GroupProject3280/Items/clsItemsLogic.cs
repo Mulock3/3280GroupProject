@@ -42,7 +42,7 @@ namespace GroupProject3280.Items
         /// </summary>
         /// <param name="pItemDesc">The description string</param>
         /// <returns>True if the string is valid</returns>
-        public bool ValidateAddDesc(string pItemDesc) {
+        public bool ValidateDescString(string pItemDesc) {
             return pItemDesc != null && pItemDesc.Length > 0;
         }
 
@@ -52,7 +52,7 @@ namespace GroupProject3280.Items
         /// </summary>
         /// <param name="pItemCost">The cost string</param>
         /// <returns>The cost value, or -1 if the string is invalid</returns>
-        public bool ValidateAddCost(string pItemCost, out Decimal pItemCostDec) {
+        public bool ValidateCostString(string pItemCost, out Decimal pItemCostDec) {
             decimal dec;
             if(Decimal.TryParse(pItemCost, out dec) && dec >= 0) {
                 pItemCostDec = dec;
@@ -77,13 +77,10 @@ namespace GroupProject3280.Items
                 if (GetInvoicesFor(pItemCode).Count > 0) {
                     return false;
                 }
-                DataSet ds;
                 int rowCount = 0;
                 // execute SQL statement
-                ds = Database.ExecuteSQLStatement(clsItemsSQL.DeleteItemDesc(pItemCode), ref rowCount);
-                // TODO push changes to database?
-
-                return true;
+                rowCount = Database.ExecuteNonQuery(clsItemsSQL.DeleteItemDesc(pItemCode));
+                return rowCount > 0;
             } catch (Exception e) {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
             }
@@ -98,16 +95,13 @@ namespace GroupProject3280.Items
         /// <returns>True if the database was modified</returns>
         public bool AddItemDesc(string pItemCode, string pItemDesc, decimal pCost) {
             try {
-                DataSet ds;
                 int rowCount = 0;
                 // execute SQL statement
-                ds = Database.ExecuteSQLStatement(clsItemsSQL.AddItemDesc(pItemCode, pItemDesc, pCost), ref rowCount);
-                // TODO push changes to database?
-
+                rowCount = Database.ExecuteNonQuery(clsItemsSQL.AddItemDesc(pItemCode, pItemDesc, pCost));
+                return rowCount > 0;
             } catch (Exception e) {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
             }
-            return true;
         }
 
         /// <summary>
@@ -119,16 +113,13 @@ namespace GroupProject3280.Items
         /// <returns>True if the database was modified</returns>
         public bool UpdateItemDesc(string pItemCode, string pItemDesc, decimal pCost) {
             try {
-                DataSet ds;
                 int rowCount = 0;
                 // execute SQL statement
-                ds = Database.ExecuteSQLStatement(clsItemsSQL.UpdateItemDesc(pItemCode, pItemDesc, pCost), ref rowCount);
-                // TODO push changes to database?
-
+                rowCount = Database.ExecuteNonQuery(clsItemsSQL.UpdateItemDesc(pItemCode, pItemDesc, pCost));
+                return rowCount > 0;
             } catch (Exception e) {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
             }
-            return true;
         }
 
         /// <summary>
