@@ -33,7 +33,7 @@ namespace GroupProject3280.Items
         /// <param name="pItemCode">The item code string</param>
         /// <returns>True if the string is valid</returns>
         public bool ValidateAddCode(string pItemCode) {
-            return pItemCode != null && GetItemDesc(pItemCode).Count == 0;
+            return pItemCode != null && pItemCode.Length > 0 && GetItemDesc(pItemCode).Count == 0;
         }
 
         /// <summary>

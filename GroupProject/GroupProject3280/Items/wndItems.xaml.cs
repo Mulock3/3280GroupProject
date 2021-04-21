@@ -184,7 +184,6 @@ namespace GroupProject3280.Items
                 }
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Close();
             }
         }
 
@@ -211,11 +210,13 @@ namespace GroupProject3280.Items
                         // Notify the user
                         string message = String.Format("Deleted '{0}' ({1})", desc, code);
                         MessageBox.Show(message, "Delete Item success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    } else {
+                        string message = String.Format("Cannot delete '{0}' ({1}). Make sure there are no invoices using this item.", desc, code);
+                        MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             } catch(Exception ex) {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Close();
             }
             
         }
@@ -266,7 +267,6 @@ namespace GroupProject3280.Items
                 }
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Close();
             }
         }
 
@@ -281,7 +281,7 @@ namespace GroupProject3280.Items
                 // Only allow numbers to be entered
                 if (!(e.Key >= Key.D0 && e.Key <= Key.D9) && !(e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)) {
                     // Allow the user to use the backspace, delete, tab and enter
-                    if (!(e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Tab || e.Key == Key.Enter || e.Key == Key.Decimal)) {
+                    if (!(e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Tab || e.Key == Key.Enter || e.Key == Key.Decimal || e.Key == Key.OemPeriod)) {
                         e.Handled = true;
                     }
                 }
