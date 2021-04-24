@@ -105,7 +105,7 @@ namespace GroupProject3280.Search
         /// <returns></returns>
         public static string GetInvoiceDates()
         {
-            string sSQL = "SELECT InvoiceDate FROM Invoices";
+            string sSQL = "SELECT DISTINCT InvoiceDate FROM Invoices";
 
             return sSQL;
         }
