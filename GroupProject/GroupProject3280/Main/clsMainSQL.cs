@@ -60,7 +60,7 @@ namespace GroupProject3280.Main
         /// <returns>SQL query string to insert a row into the Invoice table using the invoice date and the total cost</returns>
         public static string InsertIntoInvoices(string invoiceDate, string totalCost)
         {
-            return "INSERT INTO Invoices (InvoiceDate, TotalCost) Values('#" + invoiceDate + "#', " + totalCost + ")";
+            return "INSERT INTO Invoices (InvoiceDate, TotalCost) Values(#" + invoiceDate + "#, " + totalCost + ")";
         }
 
         /// <summary>
@@ -90,6 +90,15 @@ namespace GroupProject3280.Main
         public static string SelectInvoiceItems(string invoiceNumber)
         {
             return "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost FROM LineItems, ItemDesc Where LineItems.ItemCode = ItemDesc.ItemCode And LineItems.InvoiceNum = " + invoiceNumber;
+        }
+
+        /// <summary>
+        /// SQL query to select the invoice number of the most recently created invoice.
+        /// </summary>
+        /// <returns>The Invoice Number of the most recently created invoice</returns>
+        public static string SelectNewInvoiceNumber()
+        {
+            return "SELECT MAX(InvoiceNum) FROM Invoices";
         }
     }
 }

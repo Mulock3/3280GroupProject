@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GroupProject3280.Main"
         mc:Ignorable="d"
-        Title="wndMain" Height="400" Width="400" Closed="Window_Closed">
+        Title="wndMain" Height="400" Width="600" Closed="Window_Closed">
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -18,26 +18,37 @@
         <DockPanel Grid.Row="0" Grid.Column="0">
             <Menu DockPanel.Dock="Top" d:IsHidden="True">
                 <MenuItem Header="Invoice">
-                    <MenuItem Header="Search" Click="InvoiceSearchMenuItem_Click"/>
+                    <MenuItem x:Name="miSearch" Header="Search" Click="InvoiceSearchMenuItem_Click"/>
                     <Separator />
-                    <MenuItem Header="New" Click="InvoiceNewMenuItem_Click"/>
-                    <MenuItem Header="Edit" Click="InvoiceEditMenuItem_Click"/>
-                    <MenuItem Header="Delete" Click="InvoiceDeletMenuItem_Click"/>
+                    <MenuItem x:Name="miNew" Header="New" Click="InvoiceNewMenuItem_Click"/>
+                    <MenuItem x:Name="miEdit" Header="Edit" Click="InvoiceEditMenuItem_Click" IsEnabled="False"/>
+                    <MenuItem x:Name="miDelete" Header="Delete" Click="InvoiceDeletMenuItem_Click" IsEnabled="False"/>
                 </MenuItem>
                 <MenuItem Header="Items">
-                    <MenuItem Header="Update" Click="ItemsUpdateMenuItem_Click"/>
+                    <MenuItem x:Name="miUpdate" Header="Update" Click="ItemsUpdateMenuItem_Click"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
         <Canvas Grid.Row="1" Grid.Column="0">
-            <Label Content="Invoice # :" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
+            <Label x:Name="lblInvoiceNumber" Content="Invoice # :" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="10"/>
             <Label Content="Invoice Date :" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.88,4.544" Canvas.Left="108" Canvas.Top="10"/>
-            <DatePicker HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="192" Canvas.Top="11"/>
-            <ComboBox x:Name="cboItems" Width="120" Canvas.Left="259" Canvas.Top="41"/>
-            <DataGrid Height="300" Width="244" Canvas.Left="10" Canvas.Top="41"/>
-            <Button Content="Add" Width="75" Canvas.Left="259" Canvas.Top="68"/>
-            <Button Content="Remove" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Canvas.Left="259" Canvas.Top="93"/>
-            <Label Content="Total: " Canvas.Left="259" Canvas.Top="315" RenderTransformOrigin="6.642,0.23"/>
+            <DatePicker x:Name="dpInvoiceDate" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="192" Canvas.Top="11" IsEnabled="False" SelectedDateChanged="dpInvoiceDate_SelectedDateChanged"/>
+            <ComboBox x:Name="cboItems" Width="155" Canvas.Left="415" Canvas.Top="41" SelectionChanged="cboItems_SelectionChanged" IsEnabled="False"/>
+            <DataGrid AutoGenerateColumns="False" x:Name="dgInvoiceItems" Height="290" Width="400" Canvas.Left="10" Canvas.Top="41" IsEnabled="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Item Code" Binding="{Binding Path=ItemCode}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Item Description" Binding="{Binding Path=Desc}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Cost" Binding="{Binding Path=Cost}" IsReadOnly="True"/>
+                    <DataGridCheckBoxColumn Header="Select" Binding="{Binding Path=Selected}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button x:Name="btnAdd" Content="Add Items" Width="75" Canvas.Left="415" Canvas.Top="99" Click="btnAdd_Click" IsEnabled="False"/>
+            <Button x:Name="btnRemove" Content="Remove Selected Items" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Canvas.Left="415" Canvas.Top="124" Click="btnRemove_Click" IsEnabled="False"/>
+            <Label x:Name="lblTotal" Content="Total: " Canvas.Left="415" Canvas.Top="280" RenderTransformOrigin="6.642,0.23"/>
+            <Button x:Name="btnCancel" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="480" Canvas.Top="311" Content="Cancel" Width="60" IsEnabled="False" Click="btnCancel_Click"/>
+            <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="415" Canvas.Top="311" Width="60" IsEnabled="False" Click="btnSave_Click"/>
+            <Label x:Name="lblCost" Content="Cost:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="415" Canvas.Top="68"/>
+            <Label x:Name="lblInvoiceDateError" Content="Select an Invoice Date" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="299" Canvas.Top="11" Foreground="Red" IsEnabled="False" Visibility="Hidden"/>
         </Canvas>
     </Grid>
 </Window>

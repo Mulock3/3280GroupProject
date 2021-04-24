@@ -29,7 +29,7 @@ namespace GroupProject3280
         }
 
         private void debugItemsScreen_Click(object sender, RoutedEventArgs e) {
-            int idIncoming = -1;
+            //int idIncoming = -1;
             //Search.wndSearch search = new Search.wndSearch(this);
             //search.ShowDialog();
         }
