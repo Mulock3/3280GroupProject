@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GroupProject3280.Items"
         xmlns:GroupProject3280="clr-namespace:GroupProject3280" x:Name="wndItemsWindow" x:Class="GroupProject3280.Items.wndItems"
         mc:Ignorable="d"
-        Title="Update Items" FontSize="12" Loaded="wndItemsWindow_Loaded" Height="525" Width="700">
+        Title="Update Items" FontSize="12" Loaded="wndItemsWindow_Loaded" Height="525" Width="700" Closing="wndItemsWindow_Closing">
     <Window.Resources>
         <GroupProject3280:InvoiceDataSet x:Key="invoiceDataSet"/>
         <CollectionViewSource x:Key="itemDescViewSource" Source="{Binding ItemDesc, Source={StaticResource invoiceDataSet}}"/>

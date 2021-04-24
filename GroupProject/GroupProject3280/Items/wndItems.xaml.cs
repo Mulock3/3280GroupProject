@@ -40,6 +40,14 @@ namespace GroupProject3280.Items
         public wndItems() {
             InitializeComponent();
             Logic = new clsItemsLogic(MainWindow.Database);
+            Init();
+        }
+
+        /// <summary>
+        /// Called when the window is displayed.
+        /// Hides and resets various fields
+        /// </summary>
+        public void Init() {
             SetEditEnabled(false);
             // Hide error labels
             lAddItemCodeErr.Visibility = Visibility.Hidden;
@@ -316,6 +324,16 @@ namespace GroupProject3280.Items
             }
         }
 
+        /// <summary>
+        /// Hides the window instead of removing it
+        /// </summary>
+        /// <param name="sender">The object that is closing</param>
+        /// <param name="e">The event args</param>
+        private void wndItemsWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            this.Hide();
+            Init();
+            e.Cancel = true;
+        }
 
         #endregion
 
