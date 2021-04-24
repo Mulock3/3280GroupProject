@@ -74,16 +74,19 @@ namespace GroupProject3280.Items
         /// Used to update combo boxes to the latest version of the database
         /// </summary>
         private void OnChangeDatabase() {
-            GroupProject3280.InvoiceDataSet invoiceDataSet = ((GroupProject3280.InvoiceDataSet)(this.FindResource("invoiceDataSet")));
-            // Load data into the table ItemDesc.
-            GroupProject3280.InvoiceDataSetTableAdapters.ItemDescTableAdapter invoiceDataSetItemDescTableAdapter = new GroupProject3280.InvoiceDataSetTableAdapters.ItemDescTableAdapter();
-            invoiceDataSetItemDescTableAdapter.Fill(invoiceDataSet.ItemDesc);
-            System.Windows.Data.CollectionViewSource itemDescViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("itemDescViewSource")));
-            itemDescViewSource.View.MoveCurrentToFirst();
-            // Refresh item sources
-            cbDeleteItem.ItemsSource = Logic.GetItemDesc();
-            cbEditItem.ItemsSource = Logic.GetItemDesc();
-            IsChanged = true;
+            try {
+                // Refresh item sources
+                Logic.UpdateDataView();
+                itemDescDataGrid.ItemsSource = null;
+                itemDescDataGrid.ItemsSource = Logic.DataView.Tables[0].DefaultView;
+                cbDeleteItem.ItemsSource = null;
+                cbEditItem.ItemsSource = null;
+                cbDeleteItem.ItemsSource = Logic.GetItemDesc();
+                cbEditItem.ItemsSource = Logic.GetItemDesc();
+                IsChanged = true;
+            } catch(Exception ex) {
+                throw ex;
+            }
         }
 
         #region EVENT_METHODS
@@ -102,7 +105,6 @@ namespace GroupProject3280.Items
                 IsChanged = false;
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Close();
             }
         }
 
@@ -286,6 +288,26 @@ namespace GroupProject3280.Items
                 if (!(e.Key >= Key.D0 && e.Key <= Key.D9) && !(e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)) {
                     // Allow the user to use the backspace, delete, tab and enter
                     if (!(e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Tab || e.Key == Key.Enter || e.Key == Key.Decimal || e.Key == Key.OemPeriod)) {
+                        e.Handled = true;
+                    }
+                }
+            } catch (System.Exception ex) {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// Called when a key is typed in an item description text box.
+        /// Only allows alphabetic characters
+        /// </summary>
+        /// <param name="sender">The textbox that is being changed</param>
+        /// <param name="e">The key event args</param>
+        private void tbItemDesc_PreviewKeyDown(object sender, KeyEventArgs e) {
+            try {
+                // Only allow letters to be entered
+                if (!(e.Key >= Key.A && e.Key <= Key.Z)) {
+                    // Allow the user to use the backspace, delete, tab and enter
+                    if (!(e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Tab || e.Key == Key.Enter || e.Key == Key.OemQuestion)) {
                         e.Handled = true;
                     }
                 }

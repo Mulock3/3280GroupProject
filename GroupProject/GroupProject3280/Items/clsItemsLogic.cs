@@ -15,6 +15,9 @@ namespace GroupProject3280.Items
         /// <summary>A reference to the database connection</summary>
         private DatabaseManager Database;
 
+        /// <summary>The current data set</summary>
+        public DataSet DataView { get; private set; }
+
         #endregion
 
         #region METHODS
@@ -23,6 +26,7 @@ namespace GroupProject3280.Items
         /// <param name="pDatabase">The database connection to use</param>
         public clsItemsLogic(DatabaseManager pDatabase) {
             Database = pDatabase;
+            UpdateDataView();
         }
 
 
@@ -129,10 +133,8 @@ namespace GroupProject3280.Items
         public List<ItemDesc> GetItemDesc() {
             List<ItemDesc> list = new List<ItemDesc>();
             try {
-                DataSet ds;
                 int rowCount = 0;
-                // execute SQL statement
-                ds = Database.ExecuteSQLStatement(clsItemsSQL.GetItemDesc(), ref rowCount);
+                DataSet ds = GetItemDescData(ref rowCount);
                 // populate the list
                 for (int i = 0; i < rowCount; i++) {
                     list.Add(new ItemDesc((string)ds.Tables[0].Rows[i][0], (string)ds.Tables[0].Rows[i][1], (decimal)ds.Tables[0].Rows[i][2]));
@@ -141,6 +143,28 @@ namespace GroupProject3280.Items
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
             }
             return list;
+        }
+
+        /// <summary>
+        /// Called when the database is changed and DataView should reflect that change.
+        /// </summary>
+        public void UpdateDataView() {
+            int rowCount = 0;
+            DataView = GetItemDescData(ref rowCount);
+        }
+
+        /// <summary>
+        /// Queries the database for the ItemDesc DataSet
+        /// </summary>
+        /// <param name="rowCount">A reference that will contain the number of rows in the DataSet</param>
+        /// <returns>The ItemDesc DataSet</returns>
+        public DataSet GetItemDescData(ref int rowCount) {
+            try {
+                // execute SQL statement
+                return Database.ExecuteSQLStatement(clsItemsSQL.GetItemDesc(), ref rowCount);
+            } catch (Exception e) {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + e.Message);
+            }
         }
 
         /// <summary>

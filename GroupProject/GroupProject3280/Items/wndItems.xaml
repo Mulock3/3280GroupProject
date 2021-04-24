@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:GroupProject3280.Items"
         xmlns:GroupProject3280="clr-namespace:GroupProject3280" x:Name="wndItemsWindow" x:Class="GroupProject3280.Items.wndItems"
         mc:Ignorable="d"
-        Title="Update Items" FontSize="14" Loaded="wndItemsWindow_Loaded" Height="525" Width="700">
+        Title="Update Items" FontSize="12" Loaded="wndItemsWindow_Loaded" Height="525" Width="700">
     <Window.Resources>
         <GroupProject3280:InvoiceDataSet x:Key="invoiceDataSet"/>
         <CollectionViewSource x:Key="itemDescViewSource" Source="{Binding ItemDesc, Source={StaticResource invoiceDataSet}}"/>
     </Window.Resources>
     <Grid DataContext="{StaticResource itemDescViewSource}">
 
-        <DataGrid x:Name="itemDescDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="10,10,347.333,15" RowDetailsVisibilityMode="VisibleWhenSelected">
+        <DataGrid x:Name="itemDescDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="10,10,347.333,15" RowDetailsVisibilityMode="VisibleWhenSelected" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="itemCodeColumn" Binding="{Binding ItemCode}" Header="Item Code" Width="75"/>
                 <DataGridTextColumn x:Name="itemDescColumn" Binding="{Binding ItemDesc}" Header="Item Desc" Width="150"/>
@@ -23,8 +23,8 @@
         <GroupBox x:Name="gbAddItem" Header="Add Item" HorizontalAlignment="Left" Height="172" Margin="362,14,0,0" VerticalAlignment="Top" Width="316">
             <StackPanel x:Name="spAddItem" Margin="0,0,1,0.333" Orientation="Vertical" HorizontalAlignment="Center" Width="303">
                 <StackPanel x:Name="spAddItemL1" Margin="0,0,0.333,0" Orientation="Horizontal" Height="30">
-                    <Label x:Name="lAddItemNum" Content="Item Code" HorizontalAlignment="Left" Margin="38,0,0,-0.333" VerticalAlignment="Top"/>
-                    <TextBox x:Name="tbAddItemCode" HorizontalAlignment="Left" Height="29" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" MaxLength="4"/>
+                    <Label x:Name="lAddItemNum" Content="Item Code" HorizontalAlignment="Left" Margin="49,0,0,-0.333" VerticalAlignment="Top"/>
+                    <TextBox x:Name="tbAddItemCode" HorizontalAlignment="Left" Height="29" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" MaxLength="4" PreviewKeyDown="tbItemDesc_PreviewKeyDown"/>
 
                 </StackPanel>
                 <StackPanel x:Name="spAddItemLine2">
@@ -32,14 +32,14 @@
                 </StackPanel>
                 <StackPanel x:Name="spAddItemL3" Margin="0,0,0.333,0" Orientation="Horizontal" Height="30" HorizontalAlignment="Right">
                     <Label x:Name="lAddItemDesc" Content="Item Description" HorizontalAlignment="Left" Margin="0,0,0,-0.333" VerticalAlignment="Top"/>
-                    <TextBox x:Name="tbAddItemDesc" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="29" Margin="0,0,0,-0.333" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" MaxLength="50"/>
+                    <TextBox x:Name="tbAddItemDesc" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="29" Margin="0,0,0,-0.333" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" MaxLength="50" PreviewKeyDown="tbItemDesc_PreviewKeyDown"/>
 
                 </StackPanel>
                 <StackPanel x:Name="spAddItemLine4">
                     <Label x:Name="lAddItemDescErr" Content="Invalid Item Description" HorizontalAlignment="Left" Margin="114,-5,0,0" VerticalAlignment="Top" FontSize="12" Foreground="Red"/>
                 </StackPanel>
                 <StackPanel x:Name="spAddItemL5" Margin="0,0,0.333,0" Orientation="Horizontal" Height="30">
-                    <Label x:Name="lAddItemCost" Content="Item Cost  $" HorizontalAlignment="Left" Margin="28,0,0,-0.333" VerticalAlignment="Top"/>
+                    <Label x:Name="lAddItemCost" Content="Item Cost  $" HorizontalAlignment="Left" Margin="40,0,0,-0.333" VerticalAlignment="Top"/>
                     <TextBox x:Name="tbAddItemCost" HorizontalAlignment="Left" VerticalContentAlignment="Center" Height="29" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" MaxLength="8" PreviewKeyDown="tbItemCost_PreviewKeyDown"/>
                     <Button x:Name="bAddItem" Content="Add" Width="43" Margin="96,0,0,0" Click="bAddItem_Click"/>
 
@@ -60,13 +60,13 @@
                 </StackPanel>
                 <StackPanel x:Name="spEditItemL2" Margin="0,0,0.333,10" Orientation="Horizontal" Height="30">
                     <Label x:Name="lEditItemNum" Content="Item Code" HorizontalAlignment="Left" Margin="38,0,0,-0.333" VerticalAlignment="Top"/>
-                    <TextBox x:Name="tbEditItemCode" HorizontalAlignment="Left" Height="29" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" IsEnabled="False" Margin="0" MaxLength="4"/>
+                    <TextBox x:Name="tbEditItemCode" HorizontalAlignment="Left" Height="29" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" IsEnabled="False" Margin="0" MaxLength="4" PreviewKeyDown="tbItemDesc_PreviewKeyDown"/>
 
 
                 </StackPanel>
                 <StackPanel x:Name="spEditItemL3" Margin="0,0,0.333,0" Orientation="Horizontal" Height="30">
-                    <Label x:Name="lEditItemName" Content="Item Description" HorizontalAlignment="Left" Margin="0,0,0,-0.333" VerticalAlignment="Top"/>
-                    <TextBox x:Name="tbEditItemDesc" VerticalContentAlignment="Center" Height="29" Margin="0,0,0,-0.333" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" HorizontalAlignment="Left" IsEnabled="False" MaxLength="50"/>
+                    <Label x:Name="lEditItemName" Content="Item Description" HorizontalAlignment="Left" Margin="5,0,0,-0.333" VerticalAlignment="Top"/>
+                    <TextBox x:Name="tbEditItemDesc" VerticalContentAlignment="Center" Height="29" Margin="0,0,0,-0.333" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" HorizontalAlignment="Left" IsEnabled="False" MaxLength="50" PreviewKeyDown="tbItemDesc_PreviewKeyDown"/>
 
                 </StackPanel>
                 <StackPanel x:Name="spEditItemLine4">
