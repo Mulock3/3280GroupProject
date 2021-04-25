@@ -217,8 +217,11 @@ namespace GroupProject3280.Main
             try
             {
                 mainLogic.PopulateItemsList();
-                mainLogic.PopulateInvoiceItems();
-                lblTotal.Content = "Total: $" + mainLogic.currentTotalCost;
+                if (mainLogic.GetInvoiceNumber() != -1)
+                {
+                    mainLogic.PopulateInvoiceItems();
+                    lblTotal.Content = "Total: $" + mainLogic.currentTotalCost;
+                }
             }
             catch (Exception ex)
             {
