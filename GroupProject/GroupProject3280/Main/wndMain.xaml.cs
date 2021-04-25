@@ -22,8 +22,7 @@ namespace GroupProject3280.Main
         #region TODO
         /*
          *  Add try catch blocks to methods
-         *  Show and hide error message if date isn't selected for new invoices.
-         *  Implement and Verify updating item list reflects changes.
+         *  When an item is updated, update the invoice
          * */
         #endregion
 
@@ -155,9 +154,6 @@ namespace GroupProject3280.Main
                     searchWindow.selectedInvoiceID = -1;
                 }
             }
-
-            //TODO when a user says yes, delete the current invoice.
-            //if (messageBoxResult == MessageBoxResult.Yes)
         }
 
         #endregion
@@ -177,7 +173,10 @@ namespace GroupProject3280.Main
         /// </summary>
         private void UpdateItemList()
         {
-            // TODO provide logic in the main logic class that udpates the item list after the update item window is closed.
+            mainLogic.SetInvoice(mainLogic.GetInvoiceNumber());
+            mainLogic.PopulateItemsList();
+            mainLogic.PopulateInvoiceItems();
+            lblTotal.Content = "Total: $" + mainLogic.currentTotalCost;
         }
 
         /// <summary>
@@ -187,7 +186,10 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void cboItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            lblCost.Content = "Cost: $" + mainLogic.GetItemCost(((ItemDesc)cboItems.SelectedItem).ItemCode);
+            if (cboItems.SelectedItem is null)
+                lblCost.Content = "Cost:";
+            else
+                lblCost.Content = "Cost: $" + mainLogic.GetItemCost(((ItemDesc)cboItems.SelectedItem).ItemCode);
         }
 
         #region Buttons
@@ -226,18 +228,24 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (isNewInvoice)
-            {
-                mainLogic.SaveInvoice(true);
-                isNewInvoice = false;
-                lblInvoiceNumber.Content = "Invoice # : " + mainLogic.GetInvoiceNumber();
-            }
+            if (dpInvoiceDate.SelectedDate is null)
+                lblInvoiceDateError.Visibility = Visibility.Visible;
             else
             {
-                mainLogic.SaveInvoice(false);
+                if (isNewInvoice)
+                {
+                    mainLogic.SaveInvoice(true);
+                    isNewInvoice = false;
+                    lblInvoiceNumber.Content = "Invoice # : " + mainLogic.GetInvoiceNumber();
+                }
+                else
+                {
+                    mainLogic.SaveInvoice(false);
+                }
+
+                LockEditOptions();
+                lblInvoiceDateError.Visibility = Visibility.Hidden;
             }
-            
-            LockEditOptions();
         }
 
         /// <summary>
@@ -250,6 +258,7 @@ namespace GroupProject3280.Main
         {
 
             LockEditOptions();
+            lblInvoiceDateError.Visibility = Visibility.Hidden;
 
             if (isNewInvoice)
             {

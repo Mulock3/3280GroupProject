@@ -38,8 +38,16 @@ namespace GroupProject3280.Main
         /// </summary>
         private Invoice invoice;
 
+        /// <summary>
+        /// Current total cost of the invoice. 
+        /// Used when the invoice is currently being updated and has a different cost than what is shown in the database.
+        /// </summary>
         public decimal currentTotalCost;
 
+        /// <summary>
+        /// Current invoice date.
+        /// Used when the invoice is being updated and has a different invoice date than what is shown in the database.
+        /// </summary>
         public DateTime currentInvoiceDate;
 
         /// <summary>
@@ -93,12 +101,13 @@ namespace GroupProject3280.Main
         /// <summary>
         /// Runs a sql command to retreive all current items in the database and adds them to the list of items.
         /// </summary>
-        private void PopulateItemsList()
+        public void PopulateItemsList()
         {
             sSQL = clsMainSQL.SelectItems();
             dataSet = db.ExecuteSQLStatement(sSQL, ref iReturn);
 
             ItemDesc item;
+            Items.Clear();
 
             for (int i = 0; i < iReturn; i++)
             {
@@ -240,7 +249,8 @@ namespace GroupProject3280.Main
         /// </summary>
         public void DeleteInvoice()
         {
-            DeleteInvoiceItems();
+            sSQL = clsMainSQL.DeleteFromLineItems(invoice.InvoiceNum.ToString());
+            db.ExecuteNonQuery(sSQL);
             sSQL = clsMainSQL.DeleteFromInvoices(invoice.InvoiceNum.ToString());
             db.ExecuteNonQuery(sSQL);
             invoice = null;
