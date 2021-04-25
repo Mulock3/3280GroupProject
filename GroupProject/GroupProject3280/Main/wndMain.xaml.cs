@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GroupProject3280.Main
 {
@@ -22,7 +14,6 @@ namespace GroupProject3280.Main
         #region TODO
         /*
          *  Add try catch blocks to methods
-         *  When an item is updated, update the invoice
          * */
         #endregion
 
@@ -76,25 +67,33 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void InvoiceSearchMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
-            searchWindow.UpdateUI();
-            searchWindow.ShowDialog(); // If an invoice was selected, this class has the ability to access and modify the current selectedID.
-            this.Show();
-            if (searchWindow.selectedInvoiceID != -1)
-            {
-                mainLogic.SetInvoice(searchWindow.selectedInvoiceID);
-                lblInvoiceNumber.Content = "Invoice # : " + mainLogic.GetInvoiceNumber();
-                mainLogic.PopulateInvoiceItems();
-                lblTotal.Content = "Total: $" + mainLogic.currentTotalCost;
-                dpInvoiceDate.SelectedDate = mainLogic.GetInvoiceDate();
-                miEdit.IsEnabled = true;
-                miDelete.IsEnabled = true;
-            }
-            else
-            {
-                MessageBox.Show("No Invoice ID Selected");
-            }
 
+            try
+            {
+                this.Hide();
+                searchWindow.UpdateUI();
+                searchWindow.ShowDialog(); // If an invoice was selected, this class has the ability to access and modify the current selectedID.
+                this.Show();
+                if (searchWindow.selectedInvoiceID != -1)
+                {
+                    mainLogic.SetInvoice(searchWindow.selectedInvoiceID);
+                    lblInvoiceNumber.Content = "Invoice # : " + mainLogic.GetInvoiceNumber();
+                    mainLogic.PopulateInvoiceItems();
+                    lblTotal.Content = "Total: $" + mainLogic.currentTotalCost;
+                    dpInvoiceDate.SelectedDate = mainLogic.GetInvoiceDate();
+                    miEdit.IsEnabled = true;
+                    miDelete.IsEnabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("No Invoice ID Selected");
+                }
+            }
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -104,10 +103,18 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void ItemsUpdateMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
-            itemsWindow.ShowDialog();
-            UpdateItemList();
-            this.Show();
+            try
+            {
+                this.Hide();
+                itemsWindow.ShowDialog();
+                UpdateItemList();
+                this.Show();
+            }
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -117,12 +124,22 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void InvoiceNewMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            UnlockEditOptions();
-            lblInvoiceNumber.Content = "Invoice # : TBD";
-            lblTotal.Content = "Total: $0";
-            dpInvoiceDate.IsEnabled = true;
-            isNewInvoice = true;
-            mainLogic.ClearInvoiceItems();
+            try
+            {
+                UnlockEditOptions();
+                lblInvoiceNumber.Content = "Invoice # : TBD";
+                lblTotal.Content = "Total: $0";
+                dpInvoiceDate.IsEnabled = true;
+                isNewInvoice = true;
+                mainLogic.ClearInvoiceItems();
+                mainLogic.UpdateTotalCost();
+                dpInvoiceDate.SelectedDate = null;
+            }
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -132,7 +149,15 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void InvoiceEditMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            UnlockEditOptions();
+            try
+            {
+                UnlockEditOptions();
+            }
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -142,17 +167,25 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void InvoiceDeletMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (mainLogic.GetInvoiceNumber() != -1)
+            try
             {
-                if (MessageBox.Show("Are you sure you would like to delete this invoice?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo)
-                    == MessageBoxResult.Yes)
+                if (mainLogic.GetInvoiceNumber() != -1)
                 {
-                    mainLogic.DeleteInvoice();
-                    miEdit.IsEnabled = false;
-                    miDelete.IsEnabled = false;
-                    lblInvoiceNumber.Content = "Invoice # :";
-                    searchWindow.selectedInvoiceID = -1;
+                    if (MessageBox.Show("Are you sure you would like to delete this invoice?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo)
+                        == MessageBoxResult.Yes)
+                    {
+                        mainLogic.DeleteInvoice();
+                        miEdit.IsEnabled = false;
+                        miDelete.IsEnabled = false;
+                        lblInvoiceNumber.Content = "Invoice # :";
+                        searchWindow.selectedInvoiceID = -1;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
@@ -165,7 +198,15 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void Window_Closed(object sender, EventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            try
+            {
+                System.Windows.Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -173,10 +214,17 @@ namespace GroupProject3280.Main
         /// </summary>
         private void UpdateItemList()
         {
-            mainLogic.SetInvoice(mainLogic.GetInvoiceNumber());
-            mainLogic.PopulateItemsList();
-            mainLogic.PopulateInvoiceItems();
-            lblTotal.Content = "Total: $" + mainLogic.currentTotalCost;
+            try
+            {
+                mainLogic.PopulateItemsList();
+                mainLogic.PopulateInvoiceItems();
+                lblTotal.Content = "Total: $" + mainLogic.currentTotalCost;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -186,10 +234,18 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void cboItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cboItems.SelectedItem is null)
-                lblCost.Content = "Cost:";
-            else
-                lblCost.Content = "Cost: $" + mainLogic.GetItemCost(((ItemDesc)cboItems.SelectedItem).ItemCode);
+            try
+            {
+                if (cboItems.SelectedItem is null)
+                    lblCost.Content = "Cost:";
+                else
+                    lblCost.Content = "Cost: $" + mainLogic.GetItemCost(((ItemDesc)cboItems.SelectedItem).ItemCode);
+            }
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         #region Buttons
@@ -202,12 +258,21 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete the selected line items? This action cannot be undone.",
-                "Delete Line Items", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            try
             {
-                mainLogic.DeleteInvoiceItems();
-                lblTotal.Content = "Total: $" + mainLogic.currentTotalCost;
-            }     
+                if (MessageBox.Show("Are you sure you want to delete the selected line items? This action cannot be undone.",
+                "Delete Line Items", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    mainLogic.DeleteInvoiceItems();
+                    lblTotal.Content = "Total: $" + mainLogic.currentTotalCost;
+                }
+            }
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+             
         }
 
         /// <summary>
@@ -217,8 +282,16 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            mainLogic.AddInvoiceItem(((ItemDesc)cboItems.SelectedItem));
-            lblTotal.Content = "Total: $" + mainLogic.currentTotalCost;
+            try
+            {
+                mainLogic.AddInvoiceItem(((ItemDesc)cboItems.SelectedItem));
+                lblTotal.Content = "Total: $" + mainLogic.currentTotalCost;
+            }
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -228,23 +301,32 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (dpInvoiceDate.SelectedDate is null)
-                lblInvoiceDateError.Visibility = Visibility.Visible;
-            else
+            try
             {
-                if (isNewInvoice)
-                {
-                    mainLogic.SaveInvoice(true);
-                    isNewInvoice = false;
-                    lblInvoiceNumber.Content = "Invoice # : " + mainLogic.GetInvoiceNumber();
-                }
+                if (dpInvoiceDate.SelectedDate is null)
+                    lblInvoiceDateError.Visibility = Visibility.Visible;
                 else
                 {
-                    mainLogic.SaveInvoice(false);
-                }
+                    if (isNewInvoice)
+                    {
+                        mainLogic.SaveInvoice(true);
+                        isNewInvoice = false;
+                        lblInvoiceNumber.Content = "Invoice # : " + mainLogic.GetInvoiceNumber();
+                        searchWindow.selectedInvoiceID = mainLogic.GetInvoiceNumber();
+                    }
+                    else
+                    {
+                        mainLogic.SaveInvoice(false);
+                    }
 
-                LockEditOptions();
-                lblInvoiceDateError.Visibility = Visibility.Hidden;
+                    LockEditOptions();
+                    lblInvoiceDateError.Visibility = Visibility.Hidden;
+                }
+            }
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
 
@@ -256,30 +338,36 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-
-            LockEditOptions();
-            lblInvoiceDateError.Visibility = Visibility.Hidden;
-
-            if (isNewInvoice)
+            try
             {
-                isNewInvoice = false;
-                
-                if (mainLogic.GetInvoiceNumber() != -1)
+                LockEditOptions();
+                lblInvoiceDateError.Visibility = Visibility.Hidden;
+
+                if (isNewInvoice)
                 {
-                    lblInvoiceNumber.Content = "Invoice # : " + mainLogic.GetInvoiceNumber();
-                    lblTotal.Content = "Total: $" + mainLogic.GetInvoiceTotal();
-                    dpInvoiceDate.SelectedDate = mainLogic.GetInvoiceDate();
+                    isNewInvoice = false;
+
+                    if (mainLogic.GetInvoiceNumber() != -1)
+                    {
+                        lblInvoiceNumber.Content = "Invoice # : " + mainLogic.GetInvoiceNumber();
+                        lblTotal.Content = "Total: $" + mainLogic.GetInvoiceTotal();
+                        dpInvoiceDate.SelectedDate = mainLogic.GetInvoiceDate();
+                    }
+                    else
+                    {
+                        lblInvoiceNumber.Content = "Invoice # : ";
+                        lblTotal.Content = "Total: ";
+                        miEdit.IsEnabled = false;
+                        miDelete.IsEnabled = false;
+                    }
                 }
-                else
-                {
-                    lblInvoiceNumber.Content = "Invoice # : ";
-                    lblTotal.Content = "Total: ";
-                    dpInvoiceDate.SelectedDate = DateTime.Today;
-                    miEdit.IsEnabled = false;
-                    miDelete.IsEnabled = false;
-                } 
+                mainLogic.CancelSave();
             }
-            mainLogic.CancelSave();
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         #endregion
@@ -289,18 +377,26 @@ namespace GroupProject3280.Main
         /// </summary>
         private void LockEditOptions()
         {
-            dpInvoiceDate.IsEnabled = false;
-            dgInvoiceItems.IsEnabled = false;
-            cboItems.IsEnabled = false;
-            btnAdd.IsEnabled = false;
-            btnRemove.IsEnabled = false;
-            btnSave.IsEnabled = false;
-            btnCancel.IsEnabled = false;
-            miSearch.IsEnabled = true;
-            miNew.IsEnabled = true;
-            miEdit.IsEnabled = true;
-            miDelete.IsEnabled = true;
-            miUpdate.IsEnabled = true;
+            try
+            {
+                dpInvoiceDate.IsEnabled = false;
+                dgInvoiceItems.IsEnabled = false;
+                cboItems.IsEnabled = false;
+                btnAdd.IsEnabled = false;
+                btnRemove.IsEnabled = false;
+                btnSave.IsEnabled = false;
+                btnCancel.IsEnabled = false;
+                miSearch.IsEnabled = true;
+                miNew.IsEnabled = true;
+                miEdit.IsEnabled = true;
+                miDelete.IsEnabled = true;
+                miUpdate.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -308,17 +404,25 @@ namespace GroupProject3280.Main
         /// </summary>
         private void UnlockEditOptions()
         {
-            dgInvoiceItems.IsEnabled = true;
-            cboItems.IsEnabled = true;
-            btnAdd.IsEnabled = true;
-            btnRemove.IsEnabled = true;
-            btnSave.IsEnabled = true;
-            btnCancel.IsEnabled = true;
-            miSearch.IsEnabled = false;
-            miNew.IsEnabled = false;
-            miEdit.IsEnabled = false;
-            miDelete.IsEnabled = false;
-            miUpdate.IsEnabled = false;
+            try
+            {
+                dgInvoiceItems.IsEnabled = true;
+                cboItems.IsEnabled = true;
+                btnAdd.IsEnabled = true;
+                btnRemove.IsEnabled = true;
+                btnSave.IsEnabled = true;
+                btnCancel.IsEnabled = true;
+                miSearch.IsEnabled = false;
+                miNew.IsEnabled = false;
+                miEdit.IsEnabled = false;
+                miDelete.IsEnabled = false;
+                miUpdate.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -328,9 +432,42 @@ namespace GroupProject3280.Main
         /// <param name="e"></param>
         private void dpInvoiceDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            mainLogic.currentInvoiceDate = (DateTime) dpInvoiceDate.SelectedDate;
+            try
+            {
+                if (dpInvoiceDate.SelectedDate is null)
+                {
+
+                }
+                else
+                    mainLogic.currentInvoiceDate = (DateTime)dpInvoiceDate.SelectedDate;
+            }
+            catch (Exception ex)
+            {
+                ClsErrorHandler.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         #endregion
+
+        /// <summary>
+        /// Static class that is used to handle errors.
+        /// This class provides error handling so each class doesn't need its own error handling methods.
+        /// </summary>
+        public static class ClsErrorHandler
+        {
+            public static void HandleError(string sClass, string sMethod, string sMessage)
+            {
+                try
+                {
+                    MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+                }
+                catch (Exception ex)
+                {
+                    string sPath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\..\error.txt"));
+                    System.IO.File.AppendAllText(sPath, Environment.NewLine + "HandleError Exception: " + ex.Message);
+                }
+            }
+        }
     }
 }

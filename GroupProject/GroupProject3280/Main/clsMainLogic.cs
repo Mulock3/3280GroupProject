@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static GroupProject3280.Main.wndMain;
 
 namespace GroupProject3280.Main
 {
@@ -103,20 +105,28 @@ namespace GroupProject3280.Main
         /// </summary>
         public void PopulateItemsList()
         {
-            sSQL = clsMainSQL.SelectItems();
-            dataSet = db.ExecuteSQLStatement(sSQL, ref iReturn);
-
-            ItemDesc item;
-            Items.Clear();
-
-            for (int i = 0; i < iReturn; i++)
+            try
             {
-                item = new ItemDesc(
-                    dataSet.Tables[0].Rows[i]["ItemCode"].ToString(),
-                    dataSet.Tables[0].Rows[i]["ItemDesc"].ToString(),
-                    decimal.Parse(dataSet.Tables[0].Rows[i]["Cost"].ToString(), System.Globalization.NumberStyles.Currency)
-                    );
-                items.Add(item);
+                sSQL = clsMainSQL.SelectItems();
+                dataSet = db.ExecuteSQLStatement(sSQL, ref iReturn);
+
+                ItemDesc item;
+                Items.Clear();
+
+                for (int i = 0; i < iReturn; i++)
+                {
+                    item = new ItemDesc(
+                        dataSet.Tables[0].Rows[i]["ItemCode"].ToString(),
+                        dataSet.Tables[0].Rows[i]["ItemDesc"].ToString(),
+                        decimal.Parse(dataSet.Tables[0].Rows[i]["Cost"].ToString(), System.Globalization.NumberStyles.Currency)
+                        );
+                    items.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
 
@@ -126,30 +136,38 @@ namespace GroupProject3280.Main
         /// </summary>
         public void PopulateInvoiceItems()
         {
-            sSQL = clsMainSQL.SelectInvoiceItems(invoice.InvoiceNum.ToString());
-            dataSet = db.ExecuteSQLStatement(sSQL, ref iReturn);
-
-            SelectableLineItem lineItem;
-
-            InvoiceItems.Clear();
-
-            for (int i = 0; i < iReturn; i++)
+            try
             {
-                lineItem = new SelectableLineItem(
-                    dataSet.Tables[0].Rows[i]["ItemCode"].ToString(),
-                    dataSet.Tables[0].Rows[i]["ItemDesc"].ToString(),
-                    decimal.Parse(dataSet.Tables[0].Rows[i]["Cost"].ToString(), System.Globalization.NumberStyles.Currency),
-                    false
-                    );
+                sSQL = clsMainSQL.SelectInvoiceItems(invoice.InvoiceNum.ToString());
+                dataSet = db.ExecuteSQLStatement(sSQL, ref iReturn);
 
-                InvoiceItems.Add(lineItem);
+                SelectableLineItem lineItem;
 
-                tempInvoiceItems.Clear();
-                foreach (SelectableLineItem sLineItem in InvoiceItems)
-                    tempInvoiceItems.Add(new SelectableLineItem(sLineItem));
-                
-                currentTotalCost = invoice.TotalCost;
-                currentInvoiceDate = invoice.InvoiceDate;
+                InvoiceItems.Clear();
+
+                for (int i = 0; i < iReturn; i++)
+                {
+                    lineItem = new SelectableLineItem(
+                        dataSet.Tables[0].Rows[i]["ItemCode"].ToString(),
+                        dataSet.Tables[0].Rows[i]["ItemDesc"].ToString(),
+                        decimal.Parse(dataSet.Tables[0].Rows[i]["Cost"].ToString(), System.Globalization.NumberStyles.Currency),
+                        false
+                        );
+
+                    InvoiceItems.Add(lineItem);
+
+                    tempInvoiceItems.Clear();
+                    foreach (SelectableLineItem sLineItem in InvoiceItems)
+                        tempInvoiceItems.Add(new SelectableLineItem(sLineItem));
+
+                    currentTotalCost = invoice.TotalCost;
+                    currentInvoiceDate = invoice.InvoiceDate;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
 
@@ -159,15 +177,20 @@ namespace GroupProject3280.Main
         /// <param name="item"></param>
         public void AddInvoiceItem(ItemDesc item)
         {
-            if (item is null)
+            try
             {
-
-            }else
-            {
-                InvoiceItems.Add(new SelectableLineItem(item.ItemCode, item.Desc, item.Cost, false));
-                UpdateTotalCost();
+                if (item is null) { }
+                else
+                {
+                    InvoiceItems.Add(new SelectableLineItem(item.ItemCode, item.Desc, item.Cost, false));
+                    UpdateTotalCost();
+                }
             }
-            
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -175,23 +198,39 @@ namespace GroupProject3280.Main
         /// </summary>
         public void DeleteInvoiceItems()
         {
-            for (int i = 0; i < InvoiceItems.Count; i++)
-                if (InvoiceItems[i].Selected)
-                {
-                    InvoiceItems.Remove(InvoiceItems[i]);
-                    i--;
-                }
-            UpdateTotalCost();
+            try
+            {
+                for (int i = 0; i < InvoiceItems.Count; i++)
+                    if (InvoiceItems[i].Selected)
+                    {
+                        InvoiceItems.Remove(InvoiceItems[i]);
+                        i--;
+                    }
+                UpdateTotalCost();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
         /// Updates the current total cost based on the price of every line item in the invoice.
         /// </summary>
-        private void UpdateTotalCost()
+        public void UpdateTotalCost()
         {
-            currentTotalCost = 0;
-            foreach (SelectableLineItem lineItem in InvoiceItems)
-                currentTotalCost += lineItem.Cost;
+            try
+            {
+                currentTotalCost = 0;
+                foreach (SelectableLineItem lineItem in InvoiceItems)
+                    currentTotalCost += lineItem.Cost;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -200,7 +239,15 @@ namespace GroupProject3280.Main
         /// <param name="dateTime"></param>
         public void UpdateInvoiceDate(DateTime dateTime)
         {
-            currentInvoiceDate = dateTime;
+            try
+            {
+                currentInvoiceDate = dateTime;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -208,7 +255,15 @@ namespace GroupProject3280.Main
         /// </summary>
         public void ClearInvoiceItems()
         {
-            InvoiceItems.Clear();
+            try
+            {
+                InvoiceItems.Clear();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -217,7 +272,15 @@ namespace GroupProject3280.Main
         /// </summary>
         public void DeleteItems()
         {
-            items.Clear();
+            try
+            {
+                items.Clear();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -226,7 +289,15 @@ namespace GroupProject3280.Main
         /// <param name="invoiceID">The number of the invoice</param>
         public void SetInvoice(int invoiceID)
         {
-            SetInvoice(invoiceID.ToString());
+            try
+            {
+                SetInvoice(invoiceID.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -235,13 +306,21 @@ namespace GroupProject3280.Main
         /// <param name="invoiceID">ID of the invoice that is used to set the current invoice</param>
         private void SetInvoice(string invoiceID)
         {
-            sSQL = clsMainSQL.SelectInvoice(invoiceID);
-            dataSet = db.ExecuteSQLStatement(sSQL, ref iReturn);
-            invoice = new Invoice(
-                Int32.Parse(dataSet.Tables[0].Rows[0]["InvoiceNum"].ToString()),
-                DateTime.Parse(dataSet.Tables[0].Rows[0]["InvoiceDate"].ToString()),
-                Int32.Parse(dataSet.Tables[0].Rows[0]["TotalCost"].ToString())
-                );
+            try
+            {
+                sSQL = clsMainSQL.SelectInvoice(invoiceID);
+                dataSet = db.ExecuteSQLStatement(sSQL, ref iReturn);
+                invoice = new Invoice(
+                    Int32.Parse(dataSet.Tables[0].Rows[0]["InvoiceNum"].ToString()),
+                    DateTime.Parse(dataSet.Tables[0].Rows[0]["InvoiceDate"].ToString()),
+                    Int32.Parse(dataSet.Tables[0].Rows[0]["TotalCost"].ToString())
+                    );
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -249,15 +328,23 @@ namespace GroupProject3280.Main
         /// </summary>
         public void DeleteInvoice()
         {
-            sSQL = clsMainSQL.DeleteFromLineItems(invoice.InvoiceNum.ToString());
-            db.ExecuteNonQuery(sSQL);
-            sSQL = clsMainSQL.DeleteFromInvoices(invoice.InvoiceNum.ToString());
-            db.ExecuteNonQuery(sSQL);
-            invoice = null;
-            currentInvoiceDate = DateTime.Today;
-            currentTotalCost = 0m;
-            InvoiceItems.Clear();
-            tempInvoiceItems.Clear();
+            try
+            {
+                sSQL = clsMainSQL.DeleteFromLineItems(invoice.InvoiceNum.ToString());
+                db.ExecuteNonQuery(sSQL);
+                sSQL = clsMainSQL.DeleteFromInvoices(invoice.InvoiceNum.ToString());
+                db.ExecuteNonQuery(sSQL);
+                invoice = null;
+                currentInvoiceDate = DateTime.Today;
+                currentTotalCost = 0m;
+                InvoiceItems.Clear();
+                tempInvoiceItems.Clear();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -267,53 +354,59 @@ namespace GroupProject3280.Main
         /// <param name="isNewInvoice">Whether the invoice being saved is brand new or already exists.</param>
         public void SaveInvoice(bool isNewInvoice)
         {
-            if (isNewInvoice)
+            try
             {
-                // Create an invoice in the database.
-                sSQL = clsMainSQL.InsertIntoInvoices(currentInvoiceDate.ToShortDateString(), currentTotalCost.ToString());
-                db.ExecuteNonQuery(sSQL);
-
-                // Get the invoice number of the newly created invoice and set the invoice object based on that new number.
-                sSQL = clsMainSQL.SelectNewInvoiceNumber();
-                SetInvoice(db.ExecuteScalarSQL(sSQL));
-
-                // Add all line items for this invoice to the database.
-                for (int i = 0; i < InvoiceItems.Count; i++)
+                if (isNewInvoice)
                 {
-                    sSQL = clsMainSQL.InsertIntoLineItems(invoice.InvoiceNum.ToString(), (i + 1).ToString(), InvoiceItems[i].ItemCode);
+                    // Create an invoice in the database.
+                    sSQL = clsMainSQL.InsertIntoInvoices(currentInvoiceDate.ToShortDateString(), currentTotalCost.ToString());
                     db.ExecuteNonQuery(sSQL);
+
+                    // Get the invoice number of the newly created invoice and set the invoice object based on that new number.
+                    sSQL = clsMainSQL.SelectNewInvoiceNumber();
+                    SetInvoice(db.ExecuteScalarSQL(sSQL));
+
+                    // Add all line items for this invoice to the database.
+                    for (int i = 0; i < InvoiceItems.Count; i++)
+                    {
+                        sSQL = clsMainSQL.InsertIntoLineItems(invoice.InvoiceNum.ToString(), (i + 1).ToString(), InvoiceItems[i].ItemCode);
+                        db.ExecuteNonQuery(sSQL);
+                    }
+
+                    // Adjust the temporary list to match the current list
+                    tempInvoiceItems.Clear();
+                    foreach (SelectableLineItem sLineItem in InvoiceItems)
+                        tempInvoiceItems.Add(new SelectableLineItem(sLineItem));
+
                 }
+                else
+                {
+                    // Delete any existing line items for this invoice
+                    sSQL = clsMainSQL.DeleteFromLineItems(invoice.InvoiceNum.ToString());
+                    db.ExecuteNonQuery(sSQL);
 
-                // Adjust the temporary list to match the current list
-                tempInvoiceItems.Clear();
-                foreach (SelectableLineItem sLineItem in InvoiceItems)
-                    tempInvoiceItems.Add(new SelectableLineItem(sLineItem));
+                    // Add all line items for this invoice to the database.
+                    for (int i = 0; i < InvoiceItems.Count; i++)
+                    {
+                        sSQL = clsMainSQL.InsertIntoLineItems(invoice.InvoiceNum.ToString(), (i + 1).ToString(), InvoiceItems[i].ItemCode);
+                        db.ExecuteNonQuery(sSQL);
+                    }
 
+                    // Update the total cost of the invoice in the database.
+                    sSQL = clsMainSQL.SetTotalCost(invoice.InvoiceNum.ToString(), currentTotalCost.ToString());
+                    db.ExecuteNonQuery(sSQL);
+
+                    // Adjust the temporary list to match the current list
+                    tempInvoiceItems.Clear();
+                    foreach (SelectableLineItem sLineItem in InvoiceItems)
+                        tempInvoiceItems.Add(new SelectableLineItem(sLineItem));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Delete any existing line items for this invoice
-                sSQL = clsMainSQL.DeleteFromLineItems(invoice.InvoiceNum.ToString());
-                db.ExecuteNonQuery(sSQL);
-
-                // Add all line items for this invoice to the database.
-                for (int i = 0; i < InvoiceItems.Count; i++)
-                {
-                    sSQL = clsMainSQL.InsertIntoLineItems(invoice.InvoiceNum.ToString(), (i+1).ToString(), InvoiceItems[i].ItemCode);
-                    db.ExecuteNonQuery(sSQL);
-                }
-
-                // Update the total cost of the invoice in the database.
-                sSQL = clsMainSQL.SetTotalCost(invoice.InvoiceNum.ToString(), currentTotalCost.ToString());
-                db.ExecuteNonQuery(sSQL);
-
-                // Adjust the temporary list to match the current list
-                tempInvoiceItems.Clear();
-                foreach (SelectableLineItem sLineItem in InvoiceItems)
-                    tempInvoiceItems.Add(new SelectableLineItem(sLineItem));
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-
-            
         }
 
         /// <summary>
@@ -321,17 +414,25 @@ namespace GroupProject3280.Main
         /// </summary>
         public void CancelSave()
         {
-            if (invoice is null)
+            try
             {
-                currentTotalCost = 0m;
-                currentInvoiceDate = DateTime.Today;
+                if (invoice is null)
+                {
+                    currentTotalCost = 0m;
+                    currentInvoiceDate = DateTime.Today;
+                }
+                else
+                    currentTotalCost = invoice.TotalCost;
+
+                InvoiceItems.Clear();
+                foreach (SelectableLineItem sLineItem in tempInvoiceItems)
+                    InvoiceItems.Add(new SelectableLineItem(sLineItem));
             }
-            else
-                currentTotalCost = invoice.TotalCost;
-            
-            InvoiceItems.Clear();
-            foreach (SelectableLineItem sLineItem in tempInvoiceItems)
-                InvoiceItems.Add(new SelectableLineItem(sLineItem));
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         #region Getters
@@ -342,7 +443,15 @@ namespace GroupProject3280.Main
         /// <returns>The date of the current invoice.</returns>
         public DateTime GetInvoiceDate()
         {
-            return invoice.InvoiceDate;
+            try
+            {
+                return invoice.InvoiceDate;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -351,7 +460,15 @@ namespace GroupProject3280.Main
         /// <returns></returns>
         public decimal GetInvoiceTotal()
         {
-            return invoice.TotalCost;
+            try
+            {
+                return invoice.TotalCost;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -361,11 +478,19 @@ namespace GroupProject3280.Main
         /// <returns>The item cost of an item.</returns>
         public decimal GetItemCost(string itemCode)
         {
-            for (int i = 0; i < Items.Count; i++)
-                if (itemCode == Items[i].ItemCode)
-                    return Items[i].Cost;
+            try
+            {
+                for (int i = 0; i < Items.Count; i++)
+                    if (itemCode == Items[i].ItemCode)
+                        return Items[i].Cost;
 
-            return 0.0m;
+                return 0.0m;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -374,14 +499,25 @@ namespace GroupProject3280.Main
         /// <returns>The current invoice number or -1 if no invoice.</returns>
         public int GetInvoiceNumber()
         {
-            if (invoice is null)
-                return -1;
-            return invoice.InvoiceNum;
+            try
+            {
+                if (invoice is null)
+                    return -1;
+                return invoice.InvoiceNum;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." +
+                                    MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
         #endregion
         #endregion
 
-
+        /// <summary>
+        /// Class that mimics Line Items, with the ability to be selected.
+        /// This also notifies when a property is changed so that it can be utilized with WPF framework.
+        /// </summary>
         public class SelectableLineItem : INotifyPropertyChanged
         {
             private string sItemCode;
