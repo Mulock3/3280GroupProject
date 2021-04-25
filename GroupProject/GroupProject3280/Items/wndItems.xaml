@@ -13,7 +13,7 @@
     </Window.Resources>
     <Grid DataContext="{StaticResource itemDescViewSource}">
 
-        <DataGrid x:Name="itemDescDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="10,10,347.333,15" RowDetailsVisibilityMode="VisibleWhenSelected" CanUserAddRows="False">
+        <DataGrid x:Name="itemDescDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" IsReadOnly="True" Margin="10,10,347.333,15" RowDetailsVisibilityMode="VisibleWhenSelected" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="itemCodeColumn" Binding="{Binding ItemCode}" Header="Item Code" Width="75"/>
                 <DataGridTextColumn x:Name="itemDescColumn" Binding="{Binding ItemDesc}" Header="Item Desc" Width="150"/>
